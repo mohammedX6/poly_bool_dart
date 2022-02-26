@@ -11,12 +11,17 @@ and the Flutter guide for
 [developing packages and plugins](https://flutter.dev/developing-packages). 
 -->
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+Boolean operations on polygons (union, intersection, difference, xor) (this library is a port for flutter of polybooljs
+
+
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+1.Clips polygons for all boolean operations
+2.Removes unnecessary vertices
+3.Handles segments that are coincident (overlap perfectly, share vertices, one inside the other, etc)
+4.Uses formulas that take floating point irregularities into account (via configurable epsilon)
+5.Provides an API for constructing efficient sequences of operations
 
 ## Getting started
 
@@ -31,9 +36,9 @@ to `/example` folder.
 ```dart
 const like = 'sample';
 ```
+# Resources
 
-## Additional information
-
-TODO: Tell users more about the package: where to find more information, how to 
-contribute to the package, how to file issues, what response they can expect 
-from the package authors, and more.
+* [View the demo + animation](https://rawgit.com/voidqk/polybooljs/master/dist/demo.html)
+* Based somewhat on the F. Martinez (2008) algorithm:
+    * [Paper](http://www.cs.ucr.edu/~vbz/cs230papers/martinez_boolean.pdf)
+    * [Code](https://github.com/akavel/martinez-src
