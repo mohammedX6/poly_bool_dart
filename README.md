@@ -19,7 +19,8 @@ Boolean operations on polygons (union, intersection, difference, xor) (this libr
 
 # Resources
 
-* [View the demo + animation](https://rawgit.com/voidqk/polybooljs/master/dist/demo.html)
+* [View the demo + animation](https://unpkg.com/polybooljs@1.2.0/dist/demo.html)
 * Based somewhat on the F. Martinez (2008) algorithm:
     * [Paper](http://www.cs.ucr.edu/~vbz/cs230papers/martinez_boolean.pdf)
     * [Code](https://github.com/akavel/martinez-src
+    * [More Info](https://github.com/velipso/polybooljs)
