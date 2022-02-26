@@ -1,6 +1,6 @@
 name: poly_bool_dart
 description: A new Flutter package project.
-version: 0.0.1
+version: 0.0.2
 homepage: https://github.com/mohammedX6/poly_bool_dart/tree/master
 
 
@@ -13,7 +13,7 @@ dependencies:
     sdk: flutter
   dart_jts: ^0.2.1
   quiver: ^3.0.1+1
-  flutter_map: ^0.14.0
+  latlong2: ^0.8.1
 
 
 
