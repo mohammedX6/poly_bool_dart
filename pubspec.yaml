@@ -1,0 +1,21 @@
+name: poly_bool_dart
+description: A new Flutter package project.
+version: 0.0.1
+homepage: https://github.com/parth58/Social-SignIn-Buttons
+
+
+environment:
+  sdk: ">=2.11.0 <3.0.0"
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  dart_jts: ^0.2.1
+  quiver: ^3.0.1+1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^1.0.0
+
