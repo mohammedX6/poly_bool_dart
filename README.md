@@ -15,11 +15,13 @@ Boolean operations on polygons (union, intersection, difference, xor) (this libr
 
 ## Features
 
-1.Clips polygons for all boolean operations
-2.Removes unnecessary vertices
-3.Handles segments that are coincident (overlap perfectly, share vertices, one inside the other, etc)
-4.Uses formulas that take floating point irregularities into account (via configurable epsilon)
-5.Provides an API for constructing efficient sequences of operations
+
+1. Clips polygons for all boolean operations
+2. Removes unnecessary vertices
+3. Handles segments that are coincident (overlap perfectly, share vertices, one inside the other,
+   etc)
+4. Uses formulas that take floating point irregularities into account (via configurable epsilon)
+5. Provides an API for constructing efficient sequences of operations
 
 # Resources
 
