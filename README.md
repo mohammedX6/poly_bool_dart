@@ -13,8 +13,6 @@ and the Flutter guide for
 
 Boolean operations on polygons (union, intersection, difference, xor) (this library is a port for flutter of polybooljs
 
-
-
 ## Features
 
 1.Clips polygons for all boolean operations
@@ -23,19 +21,6 @@ Boolean operations on polygons (union, intersection, difference, xor) (this libr
 4.Uses formulas that take floating point irregularities into account (via configurable epsilon)
 5.Provides an API for constructing efficient sequences of operations
 
-## Getting started
-
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
-
-## Usage
-
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder. 
-
-```dart
-const like = 'sample';
-```
 # Resources
 
 * [View the demo + animation](https://rawgit.com/voidqk/polybooljs/master/dist/demo.html)
