@@ -12,6 +12,11 @@ Boolean operations on polygons (union, intersection, difference, xor) (this libr
 4. Uses formulas that take floating point irregularities into account (via configurable epsilon)
 5. Provides an API for constructing efficient sequences of operations
 
+
+## Notes
+1. No test cases available, Because i don't have time right now
+
+
 # Resources
 
 * [View the demo + animation](https://rawgit.com/voidqk/polybooljs/master/dist/demo.html)
