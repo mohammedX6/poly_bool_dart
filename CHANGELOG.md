@@ -10,3 +10,7 @@
 ## 0.0.3
 
 * Update Readme
+
+## 0.1.0
+
+* Unsound Null Safety release
