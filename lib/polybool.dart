@@ -1,5 +1,5 @@
 // MIT License
-
+//@dart=2.11
 import 'intersector.dart';
 import 'segment_chainer.dart';
 import 'segment_selector.dart';

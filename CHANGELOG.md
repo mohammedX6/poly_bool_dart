@@ -6,3 +6,7 @@
 
 * Update Readme
 * Added a basic testcase
+
+## 0.0.3
+
+* Update Readme

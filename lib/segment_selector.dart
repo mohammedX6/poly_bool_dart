@@ -1,3 +1,4 @@
+//@dart=2.11
 import 'build_log.dart';
 //
 // filter a list of segments based on boolean operations
