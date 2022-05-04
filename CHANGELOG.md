@@ -14,3 +14,7 @@
 ## 0.1.0
 
 * Unsound Null Safety release
+
+## 0.2.0
+
+* Sound Null Safety release

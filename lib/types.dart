@@ -1,4 +1,4 @@
-//@dart=2.9
+
 
 import 'package:quiver/collection.dart';
 
@@ -7,10 +7,10 @@ import 'linked_list.dart';
 import 'segment_fill.dart';
 
 class Transition {
-  EventNode before;
-  EventNode after;
-  StatusNode prev;
-  StatusNode here;
+  EventNode? before;
+  EventNode? after;
+  StatusNode? prev;
+  StatusNode? here;
 
   Transition({this.before, this.after, this.prev, this.here});
 }
@@ -31,29 +31,29 @@ class Intersection {
   /// <summary>
   /// where the intersection point is at
   /// </summary>
-  Coordinate pt;
+  Coordinate? pt;
 
   /// <summary>
   /// where intersection point is along A
   /// </summary>
-  double alongA;
+  double? alongA;
 
   /// <summary>
   /// where intersection point is along B
   /// </summary>
-  double alongB;
+  double? alongB;
 
   Intersection({this.alongA, this.alongB, this.pt});
 }
 
 class RegionPolygon {
-  List<List<Coordinate>> regions;
+  List<List<Coordinate>>? regions;
   bool inverted;
 
   RegionPolygon({this.regions, this.inverted = false});
 }
 
-class SegmentList extends DelegatingList<Segment> {
+class SegmentList extends DelegatingList<Segment?> {
   final List<Segment> _segments = [];
   bool inverted = false;
 
@@ -63,7 +63,7 @@ class SegmentList extends DelegatingList<Segment> {
 }
 
 class CombinedSegmentLists {
-  SegmentList combined;
+  SegmentList? combined;
   bool inverted1;
   bool inverted2;
 
@@ -79,10 +79,10 @@ class CombinedSegmentLists {
 
 class Segment {
   int id = -1;
-  Coordinate start;
-  Coordinate end;
-  SegmentFill myFill;
-  SegmentFill otherFill;
+  Coordinate? start;
+  Coordinate? end;
+  SegmentFill? myFill;
+  SegmentFill? otherFill;
 
   Segment({this.id = -1, this.start, this.end, this.myFill, this.otherFill}) {
     if (myFill == null) myFill = SegmentFill();

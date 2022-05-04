@@ -1,5 +1,5 @@
 // MIT License
-//@dart=2.11
+
 import 'intersector.dart';
 import 'segment_chainer.dart';
 import 'segment_selector.dart';
@@ -13,7 +13,7 @@ class PolyBool {
   SegmentList segments(RegionPolygon poly) {
     var i = new Intersecter(true);
 
-    for (var region in poly.regions) {
+    for (var region in poly.regions!) {
       i.addRegion(region);
     }
 
@@ -36,7 +36,7 @@ class PolyBool {
   }
 
   SegmentList selectUnion(CombinedSegmentLists combined) {
-    var result = SegmentSelector.union(combined.combined, log);
+    var result = SegmentSelector.union(combined.combined!, log);
     result.inverted = combined.inverted1 || combined.inverted2;
 
     return result;
@@ -44,7 +44,7 @@ class PolyBool {
 
   SegmentList selectIntersect(CombinedSegmentLists combined) {
     var result = SegmentSelector.intersect(
-      combined.combined,
+      combined.combined!,
       log,
     );
     result.inverted = combined.inverted1 && combined.inverted2;
@@ -53,21 +53,21 @@ class PolyBool {
   }
 
   SegmentList selectDifference(CombinedSegmentLists combined) {
-    var result = SegmentSelector.difference(combined.combined, log);
+    var result = SegmentSelector.difference(combined.combined!, log);
     result.inverted = combined.inverted1 && !combined.inverted2;
 
     return result;
   }
 
   SegmentList selectDifferenceRev(CombinedSegmentLists combined) {
-    var result = SegmentSelector.differenceRev(combined.combined, log);
+    var result = SegmentSelector.differenceRev(combined.combined!, log);
     result.inverted = !combined.inverted1 && combined.inverted2;
 
     return result;
   }
 
   SegmentList selectXor(CombinedSegmentLists combined) {
-    var result = SegmentSelector.xor(combined.combined, log);
+    var result = SegmentSelector.xor(combined.combined!, log);
     result.inverted = combined.inverted1 != combined.inverted2;
 
     return result;

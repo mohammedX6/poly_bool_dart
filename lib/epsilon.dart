@@ -1,4 +1,4 @@
-//@dart=2.11
+
 // provides the raw computation functions that takes epsilon into account
 //
 // zero is defined to be between (-epsilon, epsilon) exclusive

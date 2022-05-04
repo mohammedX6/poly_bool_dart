@@ -1,4 +1,4 @@
-//@dart=2.11
+
 import 'build_log.dart';
 //
 // filter a list of segments based on boolean operations
@@ -7,14 +7,14 @@ import 'segment_fill.dart';
 import 'types.dart';
 
 class SegmentSelector {
-  static select(SegmentList segments, selection, BuildLog buildLog) {
+  static select(SegmentList segments, selection, BuildLog? buildLog) {
     var result = new SegmentList();
 
     segments.forEach((seg) {
-      var index = (seg.myFill.above ? 8 : 0) +
-          (seg.myFill.below ? 4 : 0) +
-          ((seg.otherFill != null && seg.otherFill.above) ? 2 : 0) +
-          ((seg.otherFill != null && seg.otherFill.below) ? 1 : 0);
+      var index = (seg!.myFill!.above! ? 8 : 0) +
+          (seg.myFill!.below! ? 4 : 0) +
+          ((seg.otherFill != null && seg.otherFill!.above!) ? 2 : 0) +
+          ((seg.otherFill != null && seg.otherFill!.below!) ? 1 : 0);
 
       if (selection[index] != 0) {
         result.add(new Segment(
@@ -220,23 +220,23 @@ class SegmentSelector {
     0
   ];
 
-  static SegmentList union(SegmentList segments, BuildLog buildLog) {
+  static SegmentList union(SegmentList segments, BuildLog? buildLog) {
     return select(segments, union_select_table, buildLog);
   }
 
-  static SegmentList difference(SegmentList segments, BuildLog buildLog) {
+  static SegmentList difference(SegmentList segments, BuildLog? buildLog) {
     return select(segments, difference_select_table, buildLog);
   }
 
-  static SegmentList intersect(SegmentList segments, BuildLog buildLog) {
+  static SegmentList intersect(SegmentList segments, BuildLog? buildLog) {
     return select(segments, intersect_select_table, buildLog);
   }
 
-  static SegmentList differenceRev(SegmentList segments, BuildLog buildLog) {
+  static SegmentList differenceRev(SegmentList segments, BuildLog? buildLog) {
     return select(segments, differenceRev_select_table, buildLog);
   }
 
-  static SegmentList xor(SegmentList segments, BuildLog buildLog) {
+  static SegmentList xor(SegmentList segments, BuildLog? buildLog) {
     return select(segments, xor_select_table, buildLog);
   }
 }
