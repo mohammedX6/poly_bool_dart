@@ -1,19 +1,17 @@
 //@dart=2.11
-import 'package:dart_jts/dart_jts.dart' as JTS;
 
-
-
+import 'coordinate.dart';
 import 'epsilon.dart';
 import 'types.dart';
 
 class SegmentChainer {
-  List<List<JTS.Coordinate>> chains;
-  List<List<JTS.Coordinate>> regions;
+  List<List<Coordinate>> chains;
+  List<List<Coordinate>> regions;
   Match first_match;
   Match second_match;
   Match next_match;
 
-  List<List<JTS.Coordinate>> chain(SegmentList segments) {
+  List<List<Coordinate>> chain(SegmentList segments) {
     this.chains = [];
     this.regions = [];
 
@@ -59,7 +57,7 @@ class SegmentChainer {
 
       if (next_match == first_match) {
         // we didn't match anything, so create a new chain
-        List<JTS.Coordinate> pointList = [];
+        List<Coordinate> pointList = [];
         pointList.add(pt1);
         pointList.add(pt2);
         chains.add(pointList);
@@ -209,7 +207,7 @@ class SegmentChainer {
     //chains[index].reversed;
     //if (buildLog != null) buildLog.chainReverse(index);
 
-    List<JTS.Coordinate> pointList = [];
+    List<Coordinate> pointList = [];
     pointList.addAll(chains[index].reversed.toList());
     chains[index] = pointList; // gee, that's easy
   }

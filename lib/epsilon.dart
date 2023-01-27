@@ -6,15 +6,14 @@
 
 import 'dart:math' as math;
 
-import 'package:dart_jts/dart_jts.dart' as JTS;
-
+import 'coordinate.dart';
 import 'types.dart';
 
 class Epsilon {
   static const eps = 0.0000000001; // sane default? sure why not
 
   bool pointAboveOrOnLine(
-      JTS.Coordinate pt, JTS.Coordinate left, JTS.Coordinate right) {
+      Coordinate pt, Coordinate left, Coordinate right) {
     var Ax = left.x;
     var Ay = left.y;
     var Bx = right.x;
@@ -30,7 +29,7 @@ class Epsilon {
   }
 
   bool pointBetween(
-      JTS.Coordinate p, JTS.Coordinate left, JTS.Coordinate right) {
+      Coordinate p, Coordinate left, Coordinate right) {
     // p must be collinear with left->right
     // returns false if p == left, p == right, or left == right
     if (pointsSame(p, left) || pointsSame(p, right)) return false;
@@ -47,19 +46,19 @@ class Epsilon {
     return dot <= sqlen;
   }
 
-  bool pointsSameX(JTS.Coordinate p1, JTS.Coordinate p2) {
+  bool pointsSameX(Coordinate p1, Coordinate p2) {
     return (p1.x - p2.x).abs() < eps;
   }
 
-  bool pointsSameY(JTS.Coordinate p1, JTS.Coordinate p2) {
+  bool pointsSameY(Coordinate p1, Coordinate p2) {
     return (p1.y - p2.y).abs() < eps;
   }
 
-  bool pointsSame(JTS.Coordinate p1, JTS.Coordinate p2) {
+  bool pointsSame(Coordinate p1, Coordinate p2) {
     return pointsSameX(p1, p2) && pointsSameY(p1, p2);
   }
 
-  int pointsCompare(JTS.Coordinate p1, JTS.Coordinate p2) {
+  int pointsCompare(Coordinate p1, Coordinate p2) {
     // returns -1 if p1 is smaller, 1 if p2 is smaller, 0 if equal
     if (pointsSameX(p1, p2))
       return pointsSameY(p1, p2) ? 0 : (p1.y < p2.y ? -1 : 1);
@@ -67,7 +66,7 @@ class Epsilon {
   }
 
   bool pointsCollinear(
-      JTS.Coordinate pt1, JTS.Coordinate pt2, JTS.Coordinate pt3) {
+      Coordinate pt1, Coordinate pt2, Coordinate pt3) {
     // does pt1->pt2->pt3 make a straight line?
     // essentially this is just checking to see if the slope(pt1->pt2) === slope(pt2->pt3)
     // if slopes are equal, then they must be collinear, because they share pt2
@@ -89,8 +88,8 @@ class Epsilon {
     return (dx1 * dy2 - dx2 * dy1).abs() <= eps * (n1 + n2);
   }
 
-  Map<bool, Intersection> linesIntersectAsMap(JTS.Coordinate a0,
-      JTS.Coordinate a1, JTS.Coordinate b0, JTS.Coordinate b1) {
+  Map<bool, Intersection> linesIntersectAsMap(Coordinate a0,
+      Coordinate a1, Coordinate b0, Coordinate b1) {
     Intersection intersection;
     // returns false if the lines are coincident (e.g., parallel or on top of each other)
     //
@@ -131,7 +130,7 @@ class Epsilon {
     var A = (bdx * dy - bdy * dx) / axb;
     var B = (adx * dy - ady * dx) / axb;
 
-    JTS.Coordinate pt = JTS.Coordinate(a0.x + A * adx, a0.y + A * ady);
+    Coordinate pt = Coordinate(a0.x + A * adx, a0.y + A * ady);
     intersection = new Intersection(alongA: 0, alongB: 0, pt: pt);
 
     // categorize where intersection point is along A and B

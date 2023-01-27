@@ -1,8 +1,8 @@
 //@dart=2.9
 
-import 'package:dart_jts/dart_jts.dart' as JTS;
 import 'package:quiver/collection.dart';
 
+import 'coordinate.dart';
 import 'linked_list.dart';
 import 'segment_fill.dart';
 
@@ -31,7 +31,7 @@ class Intersection {
   /// <summary>
   /// where the intersection point is at
   /// </summary>
-  JTS.Coordinate pt;
+  Coordinate pt;
 
   /// <summary>
   /// where intersection point is along A
@@ -47,7 +47,7 @@ class Intersection {
 }
 
 class RegionPolygon {
-  List<List<JTS.Coordinate>> regions;
+  List<List<Coordinate>> regions;
   bool inverted;
 
   RegionPolygon({this.regions, this.inverted = false});
@@ -71,16 +71,16 @@ class CombinedSegmentLists {
       {this.combined, this.inverted1 = false, this.inverted2 = false});
 }
 
-// class PointList extends DelegatingList<JTS.Coordinate> {
-//   final List<JTS.Coordinate> _points = [];
+// class PointList extends DelegatingList<Coordinate> {
+//   final List<Coordinate> _points = [];
 //
-//   List<JTS.Coordinate> get delegate => _points;
+//   List<Coordinate> get delegate => _points;
 // }
 
 class Segment {
   int id = -1;
-  JTS.Coordinate start;
-  JTS.Coordinate end;
+  Coordinate start;
+  Coordinate end;
   SegmentFill myFill;
   SegmentFill otherFill;
 

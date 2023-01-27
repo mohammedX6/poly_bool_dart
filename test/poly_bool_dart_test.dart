@@ -1,5 +1,5 @@
 //@dart=2.11
-import 'package:dart_jts/dart_jts.dart';
+import 'package:poly_bool_dart/coordinate.dart';
 import 'package:poly_bool_dart/polybool.dart';
 import 'package:poly_bool_dart/types.dart';
 import 'package:test/test.dart';

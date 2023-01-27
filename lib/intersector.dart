@@ -1,7 +1,6 @@
 //@dart=2.11
 
-import 'package:dart_jts/dart_jts.dart' as JTS;
-
+import 'coordinate.dart';
 import 'epsilon.dart';
 import 'linked_list.dart';
 import 'segment_fill.dart';
@@ -20,12 +19,12 @@ class Intersecter {
     //this.buildLog = buildLog;
   }
 
-  Segment segmentNew(JTS.Coordinate start, JTS.Coordinate end) {
+  Segment segmentNew(Coordinate start, Coordinate end) {
     return Segment(
         id: -1, start: start, end: end, myFill: SegmentFill(), otherFill: null);
   }
 
-  Segment segmentCopy(JTS.Coordinate start, JTS.Coordinate end, Segment seg) {
+  Segment segmentCopy(Coordinate start, Coordinate end, Segment seg) {
     return Segment(
         id: -1,
         start: start,
@@ -34,7 +33,7 @@ class Intersecter {
         otherFill: null);
   }
 
-  void eventAdd(EventNode ev, JTS.Coordinate other_pt) {
+  void eventAdd(EventNode ev, Coordinate other_pt) {
     event_root.insertBefore(ev, other_pt);
   }
 
@@ -75,7 +74,7 @@ class Intersecter {
     return ev_start;
   }
 
-  void eventUpdateEnd(EventNode ev, JTS.Coordinate end) {
+  void eventUpdateEnd(EventNode ev, Coordinate end) {
     // slides an end backwards
     //   (start)------------(end)    to:
     //   (start)---(end)
@@ -90,7 +89,7 @@ class Intersecter {
     eventAdd(ev.other, ev.pt);
   }
 
-  EventNode eventDivide(EventNode ev, JTS.Coordinate pt) {
+  EventNode eventDivide(EventNode ev, Coordinate pt) {
     var ns = segmentCopy(pt, ev.seg.end, ev.seg);
     eventUpdateEnd(ev, pt);
 
@@ -126,7 +125,7 @@ class Intersecter {
     return calculate_INTERNAL(inverted1, inverted2);
   }
 
-  void addRegion(List<JTS.Coordinate> region) {
+  void addRegion(List<Coordinate> region) {
     if (!selfIntersection) {
       throw new Exception(
           "The addRegion() function is only intended for use when selfIntersection = false");
@@ -140,7 +139,7 @@ class Intersecter {
     // regions are a list of points:
     //  [ [0, 0], [100, 0], [50, 100] ]
     // you can add multiple regions before running calculate
-    var pt1 = new JTS.Coordinate(0, 0);
+    var pt1 = new Coordinate(0, 0);
     var pt2 = region[region.length - 1];
 
     for (var i = 0; i < region.length; i++) {

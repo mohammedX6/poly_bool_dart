@@ -1,13 +1,12 @@
 //@dart=2.11
 
-import 'package:dart_jts/dart_jts.dart' as JTS;
-
+import 'coordinate.dart';
 import 'epsilon.dart';
 import 'types.dart';
 
 class EventNode {
   bool isStart;
-  JTS.Coordinate pt;
+  Coordinate pt;
   Segment seg;
   bool primary;
   EventNode other;
@@ -143,7 +142,7 @@ class EventLinkedList {
     return root.next == null;
   }
 
-  void insertBefore(EventNode node, JTS.Coordinate other_pt) {
+  void insertBefore(EventNode node, Coordinate other_pt) {
     var last = root;
     var here = root.next;
 
@@ -167,7 +166,7 @@ class EventLinkedList {
   }
 
   bool insertBeforePredicate(
-      EventNode here, EventNode ev, JTS.Coordinate other_pt) {
+      EventNode here, EventNode ev, Coordinate other_pt) {
     // should ev be inserted before here?
     var comp = eventCompare(
         ev.isStart, ev.pt, other_pt, here.isStart, here.pt, here.other.pt);
@@ -175,8 +174,8 @@ class EventLinkedList {
     return comp < 0;
   }
 
-  int eventCompare(bool p1_isStart, JTS.Coordinate p1_1, JTS.Coordinate p1_2,
-      bool p2_isStart, JTS.Coordinate p2_1, JTS.Coordinate p2_2) {
+  int eventCompare(bool p1_isStart, Coordinate p1_1, Coordinate p1_2,
+      bool p2_isStart, Coordinate p2_1, Coordinate p2_2) {
     // compare the selected points first
     // compare the selected points first
     var comp = Epsilon().pointsCompare(p1_1, p2_1);

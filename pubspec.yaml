@@ -7,9 +7,7 @@ environment:
   sdk: '>=2.19.0 <3.0.0'
 
 dependencies:
-  dart_jts: ^0.2.1
   quiver: ^3.0.1+1
-  latlong2: ^0.8.1
 
 dev_dependencies:
   lints: ^2.0.0
