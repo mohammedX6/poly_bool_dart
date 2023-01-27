@@ -3,22 +3,14 @@ description: Boolean operations on polygons (union, intersection, difference, xo
 version: 0.1.0
 homepage: https://github.com/mohammedX6/poly_bool_dart/tree/master
 
-
 environment:
-  sdk: ">=2.16.1 <3.0.0"
-  flutter: ">=1.17.0"
+  sdk: '>=2.19.0 <3.0.0'
 
 dependencies:
-  flutter:
-    sdk: flutter
   dart_jts: ^0.2.1
   quiver: ^3.0.1+1
   latlong2: ^0.8.1
 
-
-
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
-  flutter_lints: ^1.0.0
-
+  lints: ^2.0.0
+  test: ^1.21.0

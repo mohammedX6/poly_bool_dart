@@ -1,5 +1,4 @@
 import 'package:dart_jts/dart_jts.dart' as JTS;
-import 'package:flutter/material.dart';
 import 'package:poly_bool_dart/polybool.dart';
 import 'package:poly_bool_dart/types.dart';
 import 'package:latlong2/latlong.dart';

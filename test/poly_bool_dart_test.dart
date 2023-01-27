@@ -1,8 +1,8 @@
 //@dart=2.11
-import 'package:flutter_test/flutter_test.dart';
 import 'package:dart_jts/dart_jts.dart';
 import 'package:poly_bool_dart/polybool.dart';
 import 'package:poly_bool_dart/types.dart';
+import 'package:test/test.dart';
 
 void main() {
   test('basic_test', () {
