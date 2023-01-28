@@ -1,5 +1,3 @@
-
-
 import 'package:quiver/collection.dart';
 
 import 'coordinate.dart';
@@ -9,14 +7,14 @@ import 'segment_fill.dart';
 class Transition {
   EventNode? before;
   EventNode? after;
-  StatusNode? prev;
+  StatusNode prev;
   StatusNode? here;
 
-  Transition({this.before, this.after, this.prev, this.here});
+  Transition({this.before, this.after, required this.prev, this.here});
 }
 
 class Intersection {
-  static Intersection Empty = Intersection();
+  static Intersection Empty = Intersection(pt: Coordinate(0, 0));
 
 //  alongA and alongB will each be one of: -2, -1, 0, 1, 2
 //
@@ -31,7 +29,7 @@ class Intersection {
   /// <summary>
   /// where the intersection point is at
   /// </summary>
-  Coordinate? pt;
+  Coordinate pt;
 
   /// <summary>
   /// where intersection point is along A
@@ -43,7 +41,7 @@ class Intersection {
   /// </summary>
   double? alongB;
 
-  Intersection({this.alongA, this.alongB, this.pt});
+  Intersection({this.alongA, this.alongB, required this.pt});
 }
 
 class RegionPolygon {
@@ -53,7 +51,7 @@ class RegionPolygon {
   RegionPolygon({required this.regions, this.inverted = false});
 }
 
-class SegmentList extends DelegatingList<Segment?> {
+class SegmentList extends DelegatingList<Segment> {
   final List<Segment> _segments = [];
   bool inverted = false;
 
@@ -79,10 +77,18 @@ class CombinedSegmentLists {
 
 class Segment {
   int id;
-  Coordinate? start;
-  Coordinate? end;
+  Coordinate start;
+  Coordinate end;
   SegmentFill myFill;
   SegmentFill? otherFill;
 
-  Segment({this.id = -1, this.start, this.end, SegmentFill? myFill, this.otherFill}) : myFill = myFill ?? SegmentFill();
+  Segment(
+      {this.id = -1,
+      Coordinate? start,
+      Coordinate? end,
+      SegmentFill? myFill,
+      this.otherFill})
+      : myFill = myFill ?? SegmentFill(),
+        start = start ?? Coordinate(0, 0),
+        end = end ?? Coordinate(0, 0);
 }

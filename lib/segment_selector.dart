@@ -7,11 +7,11 @@ import 'segment_fill.dart';
 import 'types.dart';
 
 class SegmentSelector {
-  static select(SegmentList segments, selection, BuildLog? buildLog) {
+  static select(SegmentList segments, List<int> selection, BuildLog? buildLog) {
     var result = SegmentList();
 
-    segments.forEach((seg) {
-      var index = (seg!.myFill.above ? 8 : 0) +
+    segments.forEach((Segment seg) {
+      var index = (seg.myFill.above ? 8 : 0) +
           (seg.myFill.below! ? 4 : 0) +
           ((seg.otherFill != null && seg.otherFill!.above) ? 2 : 0) +
           ((seg.otherFill != null && seg.otherFill!.below!) ? 1 : 0);

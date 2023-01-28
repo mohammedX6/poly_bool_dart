@@ -5,14 +5,11 @@ import 'types.dart';
 class SegmentChainer {
   List<List<Coordinate>> chains = [];
   List<List<Coordinate>> regions = [];
-  Match? first_match;
-  Match? second_match;
-  Match? next_match;
 
   List<List<Coordinate>> chain(SegmentList segments) {
     for (var seg in segments) {
-      var pt1 = seg!.start!;
-      var pt2 = seg.end!;
+      var pt1 = seg.start;
+      var pt2 = seg.end;
 
       if (Epsilon().pointsSame(pt1, pt2)) {
         print(
@@ -24,20 +21,31 @@ class SegmentChainer {
       //   buildLog.chainStart(seg);
       // }
 
-      first_match = Match(index: 0, matches_head: false, matches_pt1: false);
-
-      second_match =
+      final first_match = Match(index: 0, matches_head: false, matches_pt1: false);
+      final second_match =
           Match(index: 0, matches_head: false, matches_pt1: false);
-
-      next_match = first_match;
+      Match next_match = first_match;
 
       for (var i = 0; i < chains.length; i++) {
         var chain = chains[i];
         var head = chain[0];
-        var head2 = chain[1];
-
         var tail = chain[chain.length - 1];
-        var tail2 = chain[chain.length - 2];
+
+        bool setMatch(int index, bool matchesHead, bool matchesPt1) {
+          // return true if we've matched twice
+          next_match.index = index;
+          next_match.matches_head = matchesHead;
+          next_match.matches_pt1 = matchesPt1;
+
+          if (next_match == first_match) {
+            next_match = second_match;
+            return false;
+          }
+
+          next_match = Match(index: -1);
+
+          return true; // we've matched twice, we're done here
+        }
 
         if (Epsilon().pointsSame(head, pt1)) {
           if (setMatch(i, true, true)) break;
@@ -70,11 +78,11 @@ class SegmentChainer {
         // add the other point to the apporpriate end, and check to see if we've closed the
         // chain into a loop
 
-        var index = first_match!.index;
-        var pt = first_match!.matches_pt1
+        var index = first_match.index;
+        var pt = first_match.matches_pt1
             ? pt2
             : pt1; // if we matched pt1, then we add pt2, etc
-        var addToHead = first_match!
+        var addToHead = first_match
             .matches_head; // if we matched at head, then add to the head
 
         var chain = chains[index];
@@ -143,8 +151,8 @@ class SegmentChainer {
 
       // otherwise, we matched two chains, so we need to combine those chains together
 
-      var F = first_match!.index;
-      var S = second_match!.index;
+      var F = first_match.index;
+      var S = second_match.index;
 
       // if (buildLog != null) {
       //   buildLog.chainConnect(F, S);
@@ -152,8 +160,8 @@ class SegmentChainer {
 
       var reverseF = chains[F].length <
           chains[S].length; // reverse the shorter chain, if needed
-      if (first_match!.matches_head) {
-        if (second_match!.matches_head) {
+      if (first_match.matches_head) {
+        if (second_match.matches_head) {
           if (reverseF) {
             // <<<< F <<<< --- >>>> S >>>>
             reverseChain(F);
@@ -172,7 +180,7 @@ class SegmentChainer {
           appendChain(S, F);
         }
       } else {
-        if (second_match!.matches_head) {
+        if (second_match.matches_head) {
           // >>>> F >>>> --- >>>> S >>>>
           appendChain(F, S);
         } else {
@@ -202,22 +210,6 @@ class SegmentChainer {
     List<Coordinate> pointList = [];
     pointList.addAll(chains[index].reversed.toList());
     chains[index] = pointList; // gee, that's easy
-  }
-
-  bool setMatch(int index, bool matchesHead, bool matchesPt1) {
-    // return true if we've matched twice
-    next_match!.index = index;
-    next_match!.matches_head = matchesHead;
-    next_match!.matches_pt1 = matchesPt1;
-
-    if (next_match == first_match) {
-      next_match = second_match;
-      return false;
-    }
-
-    next_match = null;
-
-    return true; // we've matched twice, we're done here
   }
 
   void appendChain(int index1, int index2) {

@@ -72,7 +72,7 @@ class Intersecter {
     return ev_start;
   }
 
-  void eventUpdateEnd(EventNode ev, Coordinate? end) {
+  void eventUpdateEnd(EventNode ev, Coordinate end) {
     // slides an end backwards
     //   (start)------------(end)    to:
     //   (start)---(end)
@@ -87,7 +87,7 @@ class Intersecter {
     eventAdd(ev.other!, ev.pt);
   }
 
-  EventNode eventDivide(EventNode ev, Coordinate? pt) {
+  EventNode eventDivide(EventNode ev, Coordinate pt) {
     var ns = segmentCopy(pt, ev.seg.end, ev.seg);
     eventUpdateEnd(ev, pt);
 
@@ -114,10 +114,10 @@ class Intersecter {
     // invertedX is whether we treat that list of segments as an inverted polygon or not
     // returns segments that can be used for further operations
     for (int i = 0; i < segments1.length; i++) {
-      eventAddSegment(segments1[i]!, true);
+      eventAddSegment(segments1[i], true);
     }
     for (int i = 0; i < segments2.length; i++) {
-      eventAddSegment(segments2[i]!, false);
+      eventAddSegment(segments2[i], false);
     }
 
     return calculate_INTERNAL(inverted1, inverted2);
@@ -162,10 +162,10 @@ class Intersecter {
 
     var seg1 = ev1.seg;
     var seg2 = ev2.seg;
-    var a1 = seg1.start!;
-    var a2 = seg1.end!;
-    var b1 = seg2.start!;
-    var b2 = seg2.end!;
+    var a1 = seg1.start;
+    var a2 = seg1.end;
+    var b1 = seg2.start;
+    var b2 = seg2.end;
 
     // if (buildLog != null) buildLog.checkIntersection(seg1, seg2);
 

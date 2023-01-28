@@ -79,8 +79,8 @@ class StatusLinkedList {
   }
 
   Transition findTransition(EventNode ev) {
-    var prev = root;
-    var here = root.next;
+    StatusNode prev = root;
+    StatusNode? here = root.next;
 
     while (here != null) {
       if (findTransitionPredicate(ev, here)) break;
@@ -91,14 +91,14 @@ class StatusLinkedList {
 
     return Transition(
         before: prev == root ? null : prev.ev,
-        after: here != null ? here.ev : null,
+        after: here?.ev,
         prev: prev,
         here: here);
   }
 
   StatusNode insert(Transition surrounding, EventNode ev) {
-    var prev = surrounding.prev!;
-    var here = surrounding.here;
+    StatusNode prev = surrounding.prev;
+    StatusNode? here = surrounding.here;
 
     var node = StatusNode(ev: ev);
 
@@ -119,13 +119,13 @@ class StatusLinkedList {
   }
 
   int statusCompare(EventNode ev1, EventNode ev2) {
-    var a1 = ev1.seg.start!;
+    var a1 = ev1.seg.start;
     var a2 = ev1.seg.end;
-    var b1 = ev2.seg.start!;
-    var b2 = ev2.seg.end!;
+    var b1 = ev2.seg.start;
+    var b2 = ev2.seg.end;
 
     if (Epsilon().pointsCollinear(a1, b1, b2)) {
-      if (Epsilon().pointsCollinear(a2!, b1, b2))
+      if (Epsilon().pointsCollinear(a2, b1, b2))
         return 1; //eventCompare(true, a1, a2, true, b1, b2);
 
       return Epsilon().pointAboveOrOnLine(a2, b1, b2) ? 1 : -1;
