@@ -322,7 +322,7 @@ class Intersecter {
             // think of this as sandwiching two segments together, where `eve.seg` is
             // the bottom -- this will cause the above fill flag to toggle
             if (toggle) {
-              eve.seg.myFill.above = !eve.seg.myFill.above!;
+              eve.seg.myFill.above = !eve.seg.myFill.above;
             }
           } else {
             // merge two segments that belong to different polygons
