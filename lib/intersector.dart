@@ -31,7 +31,7 @@ class Intersecter {
         otherFill: null);
   }
 
-  void eventAdd(EventNode ev, Coordinate? other_pt) {
+  void eventAdd(EventNode ev, Coordinate other_pt) {
     event_root.insertBefore(ev, other_pt);
   }
 

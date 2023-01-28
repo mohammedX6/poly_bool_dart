@@ -55,6 +55,7 @@ class SegmentList extends DelegatingList<Segment> {
   final List<Segment> _segments = [];
   bool inverted = false;
 
+  @override
   List<Segment> get delegate => _segments;
 
 // custom methods
@@ -72,6 +73,7 @@ class CombinedSegmentLists {
 // class PointList extends DelegatingList<Coordinate> {
 //   final List<Coordinate> _points = [];
 //
+//   @override
 //   List<Coordinate> get delegate => _points;
 // }
 

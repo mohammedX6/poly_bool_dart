@@ -1,5 +1,6 @@
 // MIT License
 
+import 'build_log.dart';
 import 'intersector.dart';
 import 'segment_chainer.dart';
 import 'segment_selector.dart';
@@ -8,7 +9,7 @@ import 'types.dart';
 typedef Selector = SegmentList Function(CombinedSegmentLists);
 
 class PolyBool {
-  var log;
+  BuildLog? log;
 
   SegmentList segments(RegionPolygon poly) {
     final i = Intersecter(true);

@@ -6,7 +6,7 @@ import 'types.dart';
 
 class EventNode {
   bool isStart;
-  Coordinate? pt;
+  Coordinate pt;
   Segment seg;
   bool primary;
   EventNode? other;
@@ -17,7 +17,7 @@ class EventNode {
 
   EventNode(
       {this.isStart = false,
-      this.pt,
+      required this.pt,
       required this.seg,
       this.primary = false,
       this.other,
@@ -136,7 +136,7 @@ class StatusLinkedList {
 }
 
 class EventLinkedList {
-  EventNode root = EventNode(seg: Segment());
+  EventNode root = EventNode(seg: Segment(), pt: Coordinate(0, 0));
 
   EventNode? get head {
     return root.next;
@@ -146,7 +146,7 @@ class EventLinkedList {
     return root.next == null;
   }
 
-  void insertBefore(EventNode node, Coordinate? other_pt) {
+  void insertBefore(EventNode node, Coordinate other_pt) {
     var last = root;
     var here = root.next;
 
@@ -170,16 +170,16 @@ class EventLinkedList {
   }
 
   bool insertBeforePredicate(
-      EventNode here, EventNode ev, Coordinate? other_pt) {
+      EventNode here, EventNode ev, Coordinate other_pt) {
     // should ev be inserted before here?
     var comp = eventCompare(
-        ev.isStart, ev.pt!, other_pt, here.isStart, here.pt!, here.other!.pt);
+        ev.isStart, ev.pt, other_pt, here.isStart, here.pt, here.other!.pt);
 
     return comp < 0;
   }
 
-  int eventCompare(bool p1_isStart, Coordinate p1_1, Coordinate? p1_2,
-    bool p2_isStart, Coordinate p2_1, Coordinate? p2_2) {
+  int eventCompare(bool p1_isStart, Coordinate p1_1, Coordinate p1_2,
+    bool p2_isStart, Coordinate p2_1, Coordinate p2_2) {
     // compare the selected points first
     // compare the selected points first
     var comp = Epsilon().pointsCompare(p1_1, p2_1);
@@ -187,7 +187,7 @@ class EventLinkedList {
 
     // the selected points are the same
 
-    if (Epsilon().pointsSame(p1_2!, p2_2!)) // if the non-selected points are the same too...
+    if (Epsilon().pointsSame(p1_2, p2_2)) // if the non-selected points are the same too...
       return 0; // then the segments are equal
 
     if (p1_isStart != p2_isStart) // if one is a start and the other isn't...
