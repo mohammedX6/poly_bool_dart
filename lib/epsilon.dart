@@ -131,7 +131,7 @@ class Epsilon {
     var B = (adx * dy - ady * dx) / axb;
 
     Coordinate pt = Coordinate(a0.x + A * adx, a0.y + A * ady);
-    intersection = new Intersection(alongA: 0, alongB: 0, pt: pt);
+    intersection = Intersection(alongA: 0, alongB: 0, pt: pt);
 
     // categorize where intersection point is along A and B
 

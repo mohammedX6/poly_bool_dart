@@ -9,8 +9,8 @@ class Intersecter {
 
   //BuildLog buildLog;
 
-  EventLinkedList event_root = EventLinkedList();
-  late StatusLinkedList status_root;
+  final EventLinkedList event_root = EventLinkedList();
+  final StatusLinkedList status_root = StatusLinkedList();
 
   Intersecter(bool selfIntersection) {
     this.selfIntersection = selfIntersection;
@@ -27,16 +27,16 @@ class Intersecter {
         id: -1,
         start: start,
         end: end,
-        myFill: SegmentFill(above: seg.myFill!.above, below: seg.myFill!.below),
+        myFill: SegmentFill(above: seg.myFill.above, below: seg.myFill.below),
         otherFill: null);
   }
 
-  void eventAdd(EventNode? ev, Coordinate? other_pt) {
+  void eventAdd(EventNode ev, Coordinate? other_pt) {
     event_root.insertBefore(ev, other_pt);
   }
 
   EventNode eventAddSegmentStart(Segment seg, bool primary) {
-    var ev_start = new EventNode(
+    var ev_start = EventNode(
         isStart: true,
         pt: seg.start,
         seg: seg,
@@ -50,7 +50,7 @@ class Intersecter {
   }
 
   EventNode eventAddSegmentEnd(EventNode ev_start, Segment seg, bool primary) {
-    var ev_end = new EventNode(
+    var ev_end = EventNode(
         isStart: false,
         pt: seg.end,
         seg: seg,
@@ -82,13 +82,13 @@ class Intersecter {
     // }
 
     ev.other!.remove();
-    ev.seg!.end = end;
+    ev.seg.end = end;
     ev.other!.pt = end;
-    eventAdd(ev.other, ev.pt);
+    eventAdd(ev.other!, ev.pt);
   }
 
   EventNode eventDivide(EventNode ev, Coordinate? pt) {
-    var ns = segmentCopy(pt, ev.seg!.end, ev.seg!);
+    var ns = segmentCopy(pt, ev.seg.end, ev.seg);
     eventUpdateEnd(ev, pt);
 
     return eventAddSegment(ns, ev.primary);
@@ -96,7 +96,7 @@ class Intersecter {
 
   SegmentList calculate({bool inverted = false}) {
     if (!selfIntersection) {
-      throw new Exception(
+      throw Exception(
           "This function is only intended to be called when selfIntersection = true");
     }
 
@@ -106,7 +106,7 @@ class Intersecter {
   SegmentList calculateXD(SegmentList segments1, bool inverted1,
       SegmentList segments2, bool inverted2) {
     if (selfIntersection) {
-      throw new Exception(
+      throw Exception(
           "This function is only intended to be called when selfIntersection = false");
     }
 
@@ -125,7 +125,7 @@ class Intersecter {
 
   void addRegion(List<Coordinate> region) {
     if (!selfIntersection) {
-      throw new Exception(
+      throw Exception(
           "The addRegion() function is only intended for use when selfIntersection = false");
     }
 
@@ -137,7 +137,7 @@ class Intersecter {
     // regions are a list of points:
     //  [ [0, 0], [100, 0], [50, 100] ]
     // you can add multiple regions before running calculate
-    var pt1 = new Coordinate(0, 0);
+    var pt1 = Coordinate(0, 0);
     var pt2 = region[region.length - 1];
 
     for (var i = 0; i < region.length; i++) {
@@ -160,8 +160,8 @@ class Intersecter {
   EventNode? checkIntersection(EventNode ev1, EventNode ev2) {
     // returns the segment equal to ev1, or false if nothing equal
 
-    var seg1 = ev1.seg!;
-    var seg2 = ev2.seg!;
+    var seg1 = ev1.seg;
+    var seg2 = ev2.seg;
     var a1 = seg1.start!;
     var a2 = seg1.end!;
     var b1 = seg2.start!;
@@ -279,9 +279,7 @@ class Intersecter {
     //
     // main event loop
     //
-    var segments = new SegmentList();
-
-    status_root = new StatusLinkedList();
+    var segments = SegmentList();
 
     while (!event_root.isEmpty) {
       var ev = event_root.head!;
@@ -294,8 +292,8 @@ class Intersecter {
         // }
 
         var surrounding = statusFindSurrounding(ev);
-        var above = surrounding.before != null ? surrounding.before : null;
-        var below = surrounding.after != null ? surrounding.after : null;
+        var above = surrounding.before;
+        var below = surrounding.after;
 
         // if( buildLog != null )
         // {
@@ -315,23 +313,23 @@ class Intersecter {
 
           if (selfIntersection) {
             var toggle = false; // are we a toggling edge?
-            if (ev.seg!.myFill!.below == null)
+            if (ev.seg.myFill.below == null)
               toggle = true;
             else
-              toggle = ev.seg!.myFill!.above != ev.seg!.myFill!.below;
+              toggle = ev.seg.myFill.above != ev.seg.myFill.below;
 
             // merge two segments that belong to the same polygon
             // think of this as sandwiching two segments together, where `eve.seg` is
             // the bottom -- this will cause the above fill flag to toggle
             if (toggle) {
-              eve.seg!.myFill!.above = !eve.seg!.myFill!.above!;
+              eve.seg.myFill.above = !eve.seg.myFill.above!;
             }
           } else {
             // merge two segments that belong to different polygons
             // each segment has distinct knowledge, so no special logic is needed
             // note that this can only happen once per segment in this phase, because we
             // are guaranteed that all self-intersections are gone
-            eve.seg!.otherFill = ev.seg!.myFill;
+            eve.seg.otherFill = ev.seg.myFill;
           }
 
           // if (buildLog != null) {
@@ -358,41 +356,37 @@ class Intersecter {
         if (selfIntersection) {
           bool toggle = false; // are we a toggling edge?
 
-          // if we are a new segment...
-          if (ev.seg!.myFill!.below == null)
+          // if we are a segment...
+          if (ev.seg.myFill.below == null)
             // then we toggle
             toggle = true;
           else
             // we are a segment that has previous knowledge from a division
-            toggle = ev.seg!.myFill!.above !=
-                ev.seg!.myFill!.below; // calculate toggle
+            toggle = ev.seg.myFill.above !=
+                ev.seg.myFill.below; // calculate toggle
 
           // next, calculate whether we are filled below us
           if (below == null) {
             // if nothing is below us...
             // we are filled below us if the polygon is inverted
-            ev.seg!.myFill!.below = primaryPolyInverted;
+            ev.seg.myFill.below = primaryPolyInverted;
           } else {
             // otherwise, we know the answer -- it's the same if whatever is below
             // us is filled above it
-            ev.seg!.myFill!.below = below.seg!.myFill!.above;
+            ev.seg.myFill.below = below.seg.myFill.above;
           }
 
           // since now we know if we're filled below us, we can calculate whether
           // we're filled above us by applying toggle to whatever is below us
           if (toggle)
-            ev.seg!.myFill!.above = ev.seg!.myFill!.below != null
-                ? !ev.seg!.myFill!.below!
-                : ev.seg!.myFill!.above;
+            ev.seg.myFill.above = !(ev.seg.myFill.below ?? !ev.seg.myFill.above);
           else
-            ev.seg!.myFill!.above = ev.seg!.myFill!.below != null
-                ? ev.seg!.myFill!.below
-                : ev.seg!.myFill!.above;
+            ev.seg.myFill.above = ev.seg.myFill.below ??  ev.seg.myFill.above;
         } else {
           // now we fill in any missing transition information, since we are all-knowing
           // at this point
 
-          if (ev.seg!.otherFill == null) {
+          if (ev.seg.otherFill == null) {
             // if we don't have other information, then we need to figure out if we're
             // inside the other polygon
             bool? inside = false;
@@ -404,12 +398,12 @@ class Intersecter {
               // otherwise, something is below us
               // so copy the below segment's other polygon's above
               if (ev.primary == below.primary)
-                inside = below.seg!.otherFill!.above;
+                inside = below.seg.otherFill!.above;
               else
-                inside = below.seg!.myFill!.above;
+                inside = below.seg.myFill.above;
             }
 
-            ev.seg!.otherFill = new SegmentFill(above: inside, below: inside);
+            ev.seg.otherFill = SegmentFill(above: inside, below: inside);
           }
         }
 
@@ -428,11 +422,11 @@ class Intersecter {
         var st = ev.status;
 
         if (st == null) {
-          throw new Exception(
+          throw Exception(
               "PolyBool: Zero-length segment detected; your epsilon is probably too small or too large");
         }
 
-        // removing the status will create two new adjacent edges, so we'll need to check
+        // removing the status will create two adjacent edges, so we'll need to check
         // for those
         if (status_root.exists(st.prev) && status_root.exists(st.next))
           checkIntersection(st.prev!.ev!, st.next!.ev!);
@@ -446,9 +440,9 @@ class Intersecter {
         // save the segment for reporting
         if (!ev.primary) {
           // make sure `seg.myFill` actually points to the primary polygon though
-          var s = ev.seg!.myFill;
-          ev.seg!.myFill = ev.seg!.otherFill;
-          ev.seg!.otherFill = s;
+          var s = ev.seg.myFill;
+          ev.seg.myFill = ev.seg.otherFill!;
+          ev.seg.otherFill = s;
         }
 
         segments.add(ev.seg);

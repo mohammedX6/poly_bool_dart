@@ -8,16 +8,16 @@ import 'types.dart';
 
 class SegmentSelector {
   static select(SegmentList segments, selection, BuildLog? buildLog) {
-    var result = new SegmentList();
+    var result = SegmentList();
 
     segments.forEach((seg) {
-      var index = (seg!.myFill!.above! ? 8 : 0) +
-          (seg.myFill!.below! ? 4 : 0) +
+      var index = (seg!.myFill.above! ? 8 : 0) +
+          (seg.myFill.below! ? 4 : 0) +
           ((seg.otherFill != null && seg.otherFill!.above!) ? 2 : 0) +
           ((seg.otherFill != null && seg.otherFill!.below!) ? 1 : 0);
 
       if (selection[index] != 0) {
-        result.add(new Segment(
+        result.add(Segment(
             id: -1,
             start: seg.start,
             end: seg.end,

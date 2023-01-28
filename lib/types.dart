@@ -16,7 +16,7 @@ class Transition {
 }
 
 class Intersection {
-  static Intersection Empty = new Intersection();
+  static Intersection Empty = Intersection();
 
 //  alongA and alongB will each be one of: -2, -1, 0, 1, 2
 //
@@ -78,13 +78,11 @@ class CombinedSegmentLists {
 // }
 
 class Segment {
-  int id = -1;
+  int id;
   Coordinate? start;
   Coordinate? end;
-  SegmentFill? myFill;
+  SegmentFill myFill;
   SegmentFill? otherFill;
 
-  Segment({this.id = -1, this.start, this.end, this.myFill, this.otherFill}) {
-    if (myFill == null) myFill = SegmentFill();
-  }
+  Segment({this.id = -1, this.start, this.end, SegmentFill? myFill, this.otherFill}) : myFill = myFill ?? SegmentFill();
 }

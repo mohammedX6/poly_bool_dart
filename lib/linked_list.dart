@@ -7,7 +7,7 @@ import 'types.dart';
 class EventNode {
   bool isStart;
   Coordinate? pt;
-  Segment? seg;
+  Segment seg;
   bool primary;
   EventNode? other;
   StatusNode? status;
@@ -18,7 +18,7 @@ class EventNode {
   EventNode(
       {this.isStart = false,
       this.pt,
-      this.seg,
+      required this.seg,
       this.primary = false,
       this.other,
       this.status,
@@ -26,7 +26,9 @@ class EventNode {
       this.prev});
 
   void remove() {
-    prev!.next = next;
+    if (prev != null) {
+      prev!.next = next;
+    }
 
     if (next != null) {
       next!.prev = prev;
@@ -44,7 +46,9 @@ class StatusNode {
   StatusNode? prev;
 
   void remove() {
-    prev!.next = next;
+    if (prev != null) {
+      prev!.next = next;
+    }
 
     if (next != null) {
       next!.prev = prev;
@@ -58,7 +62,7 @@ class StatusNode {
 }
 
 class StatusLinkedList {
-  StatusNode root = new StatusNode();
+  StatusNode root = StatusNode();
 
   StatusNode? get head {
     return root.next;
@@ -96,7 +100,7 @@ class StatusLinkedList {
     var prev = surrounding.prev!;
     var here = surrounding.here;
 
-    var node = new StatusNode(ev: ev);
+    var node = StatusNode(ev: ev);
 
     node.prev = prev;
     node.next = here;
@@ -115,10 +119,10 @@ class StatusLinkedList {
   }
 
   int statusCompare(EventNode ev1, EventNode ev2) {
-    var a1 = ev1.seg!.start!;
-    var a2 = ev1.seg!.end;
-    var b1 = ev2.seg!.start!;
-    var b2 = ev2.seg!.end!;
+    var a1 = ev1.seg.start!;
+    var a2 = ev1.seg.end;
+    var b1 = ev2.seg.start!;
+    var b2 = ev2.seg.end!;
 
     if (Epsilon().pointsCollinear(a1, b1, b2)) {
       if (Epsilon().pointsCollinear(a2!, b1, b2))
@@ -132,7 +136,7 @@ class StatusLinkedList {
 }
 
 class EventLinkedList {
-  EventNode root = new EventNode();
+  EventNode root = EventNode(seg: Segment());
 
   EventNode? get head {
     return root.next;
@@ -142,12 +146,12 @@ class EventLinkedList {
     return root.next == null;
   }
 
-  void insertBefore(EventNode? node, Coordinate? other_pt) {
+  void insertBefore(EventNode node, Coordinate? other_pt) {
     var last = root;
     var here = root.next;
 
     while (here != null) {
-      if (insertBeforePredicate(here, node!, other_pt)) {
+      if (insertBeforePredicate(here, node, other_pt)) {
         node.prev = here.prev;
         node.next = here;
         here.prev!.next = node;
@@ -161,7 +165,7 @@ class EventLinkedList {
     }
 
     last.next = node;
-    node!.prev = last;
+    node.prev = last;
     node.next = null;
   }
 
@@ -183,8 +187,7 @@ class EventLinkedList {
 
     // the selected points are the same
 
-    if (Epsilon().pointsSame(
-        p1_2!, p2_2!)) // if the non-selected points are the same too...
+    if (Epsilon().pointsSame(p1_2!, p2_2!)) // if the non-selected points are the same too...
       return 0; // then the segments are equal
 
     if (p1_isStart != p2_isStart) // if one is a start and the other isn't...

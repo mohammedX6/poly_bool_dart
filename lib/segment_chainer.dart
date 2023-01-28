@@ -27,7 +27,7 @@ class SegmentChainer {
       first_match = Match(index: 0, matches_head: false, matches_pt1: false);
 
       second_match =
-          new Match(index: 0, matches_head: false, matches_pt1: false);
+          Match(index: 0, matches_head: false, matches_pt1: false);
 
       next_match = first_match;
 
@@ -51,11 +51,8 @@ class SegmentChainer {
       }
 
       if (next_match == first_match) {
-        // we didn't match anything, so create a new chain
-        List<Coordinate> pointList = [];
-        pointList.add(pt1);
-        pointList.add(pt2);
-        chains.add(pointList);
+        // we didn't match anything, so create a chain
+        chains.add([pt1, pt2]);
 
         // if (buildLog != null) {
         //   buildLog.chainNew(pt1, pt2);
@@ -100,7 +97,7 @@ class SegmentChainer {
 
             chain.removeAt(chain.length - 1);
           }
-          grow = grow2; // old grow is gone... new grow is what grow2 was
+          grow = grow2; // old grow is gone... grow is what grow2 was
         }
 
         if (Epsilon().pointsSame(oppo, pt)) {
@@ -238,7 +235,7 @@ class SegmentChainer {
       //if (buildLog != null) buildLog.chainRemoveTail(index1, tail);
 
       chain1.removeAt(chain1.length - 1);
-      tail = tail2; // old tail is gone... new tail is what tail2 was
+      tail = tail2; // old tail is gone... tail is what tail2 was
     }
 
     if (Epsilon().pointsCollinear(tail, head, head2)) {

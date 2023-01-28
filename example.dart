@@ -1,7 +1,6 @@
 import 'package:poly_bool_dart/coordinate.dart';
 import 'package:poly_bool_dart/polybool.dart';
 import 'package:poly_bool_dart/types.dart';
-import 'package:latlong2/latlong.dart';
 
 class Example {
   void test() {
