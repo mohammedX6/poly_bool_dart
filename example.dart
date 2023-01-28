@@ -2,6 +2,13 @@ import 'package:poly_bool_dart/coordinate.dart';
 import 'package:poly_bool_dart/polybool.dart';
 import 'package:poly_bool_dart/types.dart';
 
+class LatLng {
+  final double latitude;
+  final double longitude;
+
+  const LatLng(this.latitude, this.longitude);
+}
+
 class Example {
   void test() {
     RegionPolygon poly1 = RegionPolygon(regions: [
@@ -40,6 +47,9 @@ class Example {
       'differenceRev': PolyBool().polygon(PolyBool().selectDifferenceRev(comb)),
       'xor': PolyBool().polygon(PolyBool().selectXor(comb))
     };
-
   }
+}
+
+void main() {
+  Example().test();
 }
