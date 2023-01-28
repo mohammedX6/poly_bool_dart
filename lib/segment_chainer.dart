@@ -4,12 +4,12 @@ import 'types.dart';
 
 class SegmentChainer {
   List<List<Coordinate>> chains = [];
-  List<List<Coordinate>>? regions = [];
+  List<List<Coordinate>> regions = [];
   Match? first_match;
   Match? second_match;
   Match? next_match;
 
-  List<List<Coordinate>>? chain(SegmentList segments) {
+  List<List<Coordinate>> chain(SegmentList segments) {
     for (var seg in segments) {
       var pt1 = seg!.start!;
       var pt2 = seg.end!;
@@ -123,7 +123,7 @@ class SegmentChainer {
           // if (buildLog != null) buildLog.chainClose(first_match.index);
 
           // we have a closed chain!
-          regions!.add(chain);
+          regions.add(chain);
           continue;
         }
 

@@ -13,7 +13,7 @@ class PolyBool {
   SegmentList segments(RegionPolygon poly) {
     final i = Intersecter(true);
 
-    for (final region in poly.regions!) {
+    for (final region in poly.regions) {
       i.addRegion(region);
     }
 

@@ -47,10 +47,10 @@ class Intersection {
 }
 
 class RegionPolygon {
-  List<List<Coordinate>>? regions;
+  List<List<Coordinate>> regions;
   bool inverted;
 
-  RegionPolygon({this.regions, this.inverted = false});
+  RegionPolygon({required this.regions, this.inverted = false});
 }
 
 class SegmentList extends DelegatingList<Segment?> {
