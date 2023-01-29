@@ -7,67 +7,37 @@ import 'types.dart';
 class Intersecter {
   bool selfIntersection = false;
 
-  //BuildLog buildLog;
-
   final EventLinkedList event_root = EventLinkedList();
   final StatusLinkedList status_root = StatusLinkedList();
 
   Intersecter(bool selfIntersection) {
     this.selfIntersection = selfIntersection;
-    //this.buildLog = buildLog;
   }
 
   Segment segmentNew(Coordinate start, Coordinate end) {
+    return Segment(start: start, end: end, myFill: SegmentFill());
+  }
+
+  Segment segmentCopy(Coordinate start, Coordinate end, Segment seg) {
     return Segment(
-        id: -1, start: start, end: end, myFill: SegmentFill(), otherFill: null);
-  }
-
-  Segment segmentCopy(Coordinate? start, Coordinate? end, Segment seg) {
-    return Segment(
-        id: -1,
-        start: start,
-        end: end,
-        myFill: SegmentFill(above: seg.myFill.above, below: seg.myFill.below),
-        otherFill: null);
-  }
-
-  void eventAdd(EventNode ev, Coordinate other_pt) {
-    event_root.insertBefore(ev, other_pt);
-  }
-
-  EventNode eventAddSegmentStart(Segment seg, bool primary) {
-    var ev_start = EventNode(
-        isStart: true,
-        pt: seg.start,
-        seg: seg,
-        primary: primary,
-        other: null,
-        status: null);
-
-    eventAdd(ev_start, seg.end);
-
-    return ev_start;
-  }
-
-  EventNode eventAddSegmentEnd(EventNode ev_start, Segment seg, bool primary) {
-    var ev_end = EventNode(
-        isStart: false,
-        pt: seg.end,
-        seg: seg,
-        primary: primary,
-        other: ev_start,
-        status: null);
-
-    ev_start.other = ev_end;
-
-    eventAdd(ev_end, ev_start.pt);
-
-    return ev_end;
+      start: start,
+      end: end,
+      myFill: SegmentFill(above: seg.myFill.above, below: seg.myFill.below),
+    );
   }
 
   EventNode eventAddSegment(Segment seg, bool primary) {
-    var ev_start = eventAddSegmentStart(seg, primary);
-    eventAddSegmentEnd(ev_start, seg, primary);
+    final ev_start =
+        EventNode(isStart: true, pt: seg.start, seg: seg, primary: primary);
+
+    final ev_end =
+        EventNode(isStart: false, pt: seg.end, seg: seg, primary: primary);
+
+    ev_start.other = ev_end;
+    ev_end.other = ev_start;
+
+    event_root.insertBefore(ev_start);
+    event_root.insertBefore(ev_end);
 
     return ev_start;
   }
@@ -77,14 +47,11 @@ class Intersecter {
     //   (start)------------(end)    to:
     //   (start)---(end)
 
-    // if (buildLog != null) {
-    //   buildLog.segmentChop(ev.seg, end);
-    // }
-
-    ev.other!.remove();
+    ev.other.unlink();
     ev.seg.end = end;
-    ev.other!.pt = end;
-    eventAdd(ev.other!, ev.pt);
+    ev.other.pt = end;
+
+    event_root.insertBefore(ev.other);
   }
 
   EventNode eventDivide(EventNode ev, Coordinate pt) {
@@ -153,10 +120,6 @@ class Intersecter {
     }
   }
 
-  Transition statusFindSurrounding(EventNode ev) {
-    return status_root.findTransition(ev);
-  }
-
   EventNode? checkIntersection(EventNode ev1, EventNode ev2) {
     // returns the segment equal to ev1, or false if nothing equal
 
@@ -166,8 +129,6 @@ class Intersecter {
     var a2 = seg1.end;
     var b1 = seg2.start;
     var b2 = seg2.end;
-
-    // if (buildLog != null) buildLog.checkIntersection(seg1, seg2);
 
     Intersection intersect;
     Map<bool, Intersection> result =
@@ -193,14 +154,6 @@ class Intersecter {
 
       var a1_between = !a1_equ_b1 && Epsilon().pointBetween(a1, b1, b2);
       var a2_between = !a2_equ_b2 && Epsilon().pointBetween(a2, b1, b2);
-
-      // handy for debugging:
-      // buildLog.log({
-      //	a1_equ_b1: a1_equ_b1,
-      //	a2_equ_b2: a2_equ_b2,
-      //	a1_between: a1_between,
-      //	a2_between: a2_between
-      // });
 
       if (a1_equ_b1) {
         if (a2_between) {
@@ -282,27 +235,12 @@ class Intersecter {
     var segments = SegmentList();
 
     while (!event_root.isEmpty) {
-      var ev = event_root.head!;
-
-      //if (buildLog != null) buildLog.vert(ev.pt.x);
+      var ev = event_root.first;
 
       if (ev.isStart) {
-        // if (buildLog != null) {
-        //   buildLog.segmentNew(ev.seg, ev.primary);
-        // }
-
-        var surrounding = statusFindSurrounding(ev);
-        var above = surrounding.before;
-        var below = surrounding.after;
-
-        // if( buildLog != null )
-        // {
-        // buildLog.tempStatus(
-        // ev.seg,
-        // above != null ? above.seg : (object)false,
-        // below != null ? below.seg : (object)false
-        // );
-        // }
+        final surrounding = status_root.findTransition(ev);
+        final above = surrounding.above;
+        final below = surrounding.below;
 
         var eve = checkBothIntersections(ev, above, below);
         if (eve != null) {
@@ -332,21 +270,13 @@ class Intersecter {
             eve.seg.otherFill = ev.seg.myFill;
           }
 
-          // if (buildLog != null) {
-          //   buildLog.segmentUpdate(eve.seg);
-          // }
-
-          ev.other!.remove();
-          ev.remove();
+          ev.other.unlink();
+          ev.unlink();
         }
 
         if (event_root.head != ev) {
           // something was inserted before us in the event queue, so loop back around and
           // process it before continuing
-          // if (buildLog != null) {
-          //   buildLog.rewind(ev.seg);
-          // }
-
           continue;
         }
 
@@ -390,7 +320,7 @@ class Intersecter {
           if (ev.seg.otherFill == null) {
             // if we don't have other information, then we need to figure out if we're
             // inside the other polygon
-            bool? inside = false;
+            bool inside = false;
             if (below == null) {
               // if nothing is below us, then we're inside if the other polygon is
               // inverted
@@ -408,20 +338,10 @@ class Intersecter {
           }
         }
 
-        // if( buildLog != null )
-        // {
-        // buildLog.status(
-        // ev.seg,
-        // above != null ? above.seg : (object)false,
-        // below != null ? below.seg : (object)false
-        // );
-        // }
-
         // insert the status and remember it for later removal
-        ev.other!.status = status_root.insert(surrounding, ev);
+        ev.other.status = surrounding.insert();
       } else {
         var st = ev.status;
-
         if (st == null) {
           throw Exception(
               "PolyBool: Zero-length segment detected; your epsilon is probably too small or too large");
@@ -429,13 +349,11 @@ class Intersecter {
 
         // removing the status will create two adjacent edges, so we'll need to check
         // for those
-        if (status_root.exists(st.prev) && status_root.exists(st.next))
-          checkIntersection(st.prev!.ev!, st.next!.ev!);
-
-        // if (buildLog != null) buildLog.statusRemove(st.ev.seg);
+        if (st.previous != null && st.next != null)
+          checkIntersection(st.previous!.ev, st.next!.ev);
 
         // remove the status
-        st.remove();
+        st.unlink();
 
         // if we've reached this point, we've calculated everything there is to know, so
         // save the segment for reporting
@@ -450,12 +368,8 @@ class Intersecter {
       }
 
       // remove the event and continue
-      event_root.head!.remove();
+      ev.unlink();
     }
-
-    // if (buildLog != null) {
-    //   buildLog.done();
-    // }
 
     return segments;
   }

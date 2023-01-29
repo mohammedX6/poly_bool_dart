@@ -17,14 +17,13 @@ class SegmentSelector {
       if (selection[index] != 0) {
         // copy the segment to the results, while also calculating the fill status
         result.add(Segment(
-            id: -1,
-            start: seg.start,
-            end: seg.end,
-            myFill: SegmentFill(
-                above: selection[index] == 1, // 1 if filled above
-                below: selection[index] == 2 // 2 if filled below
-                ),
-            otherFill: null));
+          start: seg.start,
+          end: seg.end,
+          myFill: SegmentFill(
+              above: selection[index] == 1, // 1 if filled above
+              below: selection[index] == 2 // 2 if filled below
+              ),
+        ));
       }
     }
     return result;

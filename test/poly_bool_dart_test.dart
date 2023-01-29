@@ -29,6 +29,7 @@ void main() {
     }
 
     final comb = combine(poly1, poly2);
+    print('${comb.combined.delegate}');
 
     // Self-union is identity.
     expect(
@@ -37,6 +38,7 @@ void main() {
             .regions
             .first,
         unorderedEquals(poly1.regions.first.sublist(0, 4)));
+    print('start');
     final union = PolyBool().polygon(PolyBool().selectUnion(comb));
     expect(
         union.regions.first,

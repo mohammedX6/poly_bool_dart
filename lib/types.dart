@@ -5,12 +5,11 @@ import 'linked_list.dart';
 import 'segment_fill.dart';
 
 class Transition {
-  EventNode? before;
-  EventNode? after;
-  StatusNode prev;
-  StatusNode? here;
+  EventNode? above;
+  EventNode? below;
+  StatusNode Function() insert;
 
-  Transition({this.before, this.after, required this.prev, this.here});
+  Transition({this.above, this.below, required this.insert});
 }
 
 class Intersection {
@@ -78,19 +77,19 @@ class CombinedSegmentLists {
 // }
 
 class Segment {
-  int id;
-  Coordinate start;
+  final Coordinate start;
   Coordinate end;
   SegmentFill myFill;
   SegmentFill? otherFill;
 
-  Segment(
-      {this.id = -1,
-      Coordinate? start,
-      Coordinate? end,
-      SegmentFill? myFill,
-      this.otherFill})
-      : myFill = myFill ?? SegmentFill(),
-        start = start ?? Coordinate(0, 0),
-        end = end ?? Coordinate(0, 0);
+  Segment({
+    required this.start,
+    required this.end,
+    required this.myFill,
+  });
+
+  @override
+  String toString() {
+    return '($start, $end)';
+  }
 }

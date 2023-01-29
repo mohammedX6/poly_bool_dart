@@ -1,184 +1,33 @@
+import 'dart:collection';
+
 import 'coordinate.dart';
 import 'epsilon.dart';
 import 'types.dart';
 
-class EventNode {
-  bool isStart;
+class EventNode extends LinkedListEntry<EventNode> {
+  final bool isStart;
   Coordinate pt;
-  Segment seg;
-  bool primary;
-  EventNode? other;
+  final Segment seg;
+  final bool primary;
+  late final EventNode other;
+
   StatusNode? status;
 
-  EventNode? next;
-  EventNode? prev;
+  EventNode({
+    required this.isStart,
+    required this.pt,
+    required this.seg,
+    required this.primary,
+  });
 
-  EventNode(
-      {this.isStart = false,
-      required this.pt,
-      required this.seg,
-      this.primary = false,
-      this.other,
-      this.status,
-      this.next,
-      this.prev});
+  int compareTo(EventNode p2) {
+    final p1_isStart = isStart;
+    final p1_1 = pt;
+    final p1_2 = other.pt;
+    final p2_isStart = p2.isStart;
+    final p2_1 = p2.pt;
+    final p2_2 = p2.other.pt;
 
-  void remove() {
-    if (prev != null) {
-      prev!.next = next;
-    }
-
-    if (next != null) {
-      next!.prev = prev;
-    }
-
-    prev = null;
-    next = null;
-  }
-}
-
-class StatusNode {
-  EventNode? ev;
-
-  StatusNode? next;
-  StatusNode? prev;
-
-  void remove() {
-    if (prev != null) {
-      prev!.next = next;
-    }
-
-    if (next != null) {
-      next!.prev = prev;
-    }
-
-    prev = null;
-    next = null;
-  }
-
-  StatusNode({this.ev, this.next, this.prev});
-}
-
-class StatusLinkedList {
-  StatusNode root = StatusNode();
-
-  StatusNode? get head {
-    return root.next;
-  }
-
-  bool get isEmpty {
-    return root.next == null;
-  }
-
-  bool exists(StatusNode? node) {
-    if (node == null || node == root) return false;
-
-    return true;
-  }
-
-  Transition findTransition(EventNode ev) {
-    StatusNode prev = root;
-    StatusNode? here = root.next;
-
-    while (here != null) {
-      if (findTransitionPredicate(ev, here)) break;
-
-      prev = here;
-      here = here.next;
-    }
-
-    return Transition(
-        before: prev == root ? null : prev.ev,
-        after: here?.ev,
-        prev: prev,
-        here: here);
-  }
-
-  StatusNode insert(Transition surrounding, EventNode ev) {
-    StatusNode prev = surrounding.prev;
-    StatusNode? here = surrounding.here;
-
-    var node = StatusNode(ev: ev);
-
-    node.prev = prev;
-    node.next = here;
-    prev.next = node;
-
-    if (here != null) {
-      here.prev = node;
-    }
-
-    return node;
-  }
-
-  bool findTransitionPredicate(EventNode ev, StatusNode here) {
-    var comp = statusCompare(ev, here.ev!);
-    return comp > 0;
-  }
-
-  int statusCompare(EventNode ev1, EventNode ev2) {
-    var a1 = ev1.seg.start;
-    var a2 = ev1.seg.end;
-    var b1 = ev2.seg.start;
-    var b2 = ev2.seg.end;
-
-    if (Epsilon().pointsCollinear(a1, b1, b2)) {
-      if (Epsilon().pointsCollinear(a2, b1, b2))
-        return 1; //eventCompare(true, a1, a2, true, b1, b2);
-
-      return Epsilon().pointAboveOrOnLine(a2, b1, b2) ? 1 : -1;
-    }
-
-    return Epsilon().pointAboveOrOnLine(a1, b1, b2) ? 1 : -1;
-  }
-}
-
-class EventLinkedList {
-  EventNode root = EventNode(seg: Segment(), pt: Coordinate(0, 0));
-
-  EventNode? get head {
-    return root.next;
-  }
-
-  bool get isEmpty {
-    return root.next == null;
-  }
-
-  void insertBefore(EventNode node, Coordinate other_pt) {
-    var last = root;
-    var here = root.next;
-
-    while (here != null) {
-      if (insertBeforePredicate(here, node, other_pt)) {
-        node.prev = here.prev;
-        node.next = here;
-        here.prev!.next = node;
-        here.prev = node;
-
-        return;
-      }
-
-      last = here;
-      here = here.next;
-    }
-
-    last.next = node;
-    node.prev = last;
-    node.next = null;
-  }
-
-  bool insertBeforePredicate(
-      EventNode here, EventNode ev, Coordinate other_pt) {
-    // should ev be inserted before here?
-    var comp = eventCompare(
-        ev.isStart, ev.pt, other_pt, here.isStart, here.pt, here.other!.pt);
-
-    return comp < 0;
-  }
-
-  int eventCompare(bool p1_isStart, Coordinate p1_1, Coordinate p1_2,
-      bool p2_isStart, Coordinate p2_1, Coordinate p2_2) {
-    // compare the selected points first
     // compare the selected points first
     var comp = Epsilon().pointsCompare(p1_1, p2_1);
     if (comp != 0) return comp;
@@ -199,5 +48,76 @@ class EventLinkedList {
             p2_isStart ? p2_2 : p2_1)
         ? 1
         : -1;
+  }
+}
+
+class StatusNode extends LinkedListEntry<StatusNode> {
+  final EventNode ev;
+
+  StatusNode({required this.ev});
+
+  int compareTo(StatusNode other) {
+    final a1 = ev.seg.start;
+    final a2 = ev.seg.end;
+    final b1 = other.ev.seg.start;
+    final b2 = other.ev.seg.end;
+
+    if (Epsilon().pointsCollinear(a1, b1, b2)) {
+      if (Epsilon().pointsCollinear(a2, b1, b2))
+        return 1; //eventCompare(true, a1, a2, true, b1, b2);
+
+      return Epsilon().pointAboveOrOnLine(a2, b1, b2) ? 1 : -1;
+    }
+
+    return Epsilon().pointAboveOrOnLine(a1, b1, b2) ? 1 : -1;
+  }
+}
+
+class StatusLinkedList extends LinkedList<StatusNode> {
+  StatusNode? get head => isEmpty ? null : first;
+
+  Transition findTransition(EventNode ev) {
+    final newNode = StatusNode(ev: ev);
+    StatusNode insertBack() {
+      add(newNode);
+      return newNode;
+    }
+
+    if (isEmpty) {
+      return Transition(insert: insertBack);
+    }
+
+    StatusNode? here = null;
+    try {
+      here = firstWhere((s) => newNode.compareTo(s) > 0);
+    } catch (_) {}
+
+    StatusNode? prev = (here == null) ? last : here.previous;
+
+    return Transition(
+      above: prev?.ev,
+      below: here?.ev,
+      insert: here != null
+          ? () {
+              here!.insertBefore(newNode);
+              return newNode;
+            }
+          : insertBack,
+    );
+  }
+}
+
+class EventLinkedList extends LinkedList<EventNode> {
+  EventNode? get head => isEmpty ? null : first;
+
+  void insertBefore(EventNode node) {
+    try {
+      final ev = firstWhere((e) {
+        return node.compareTo(e) < 0;
+      });
+      ev.insertBefore(node);
+    } catch (_) {
+      add(node);
+    }
   }
 }
