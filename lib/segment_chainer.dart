@@ -21,7 +21,8 @@ class SegmentChainer {
       //   buildLog.chainStart(seg);
       // }
 
-      final first_match = Match(index: 0, matches_head: false, matches_pt1: false);
+      final first_match =
+          Match(index: 0, matches_head: false, matches_pt1: false);
       final second_match =
           Match(index: 0, matches_head: false, matches_pt1: false);
       Match next_match = first_match;

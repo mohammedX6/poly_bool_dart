@@ -10,7 +10,8 @@ class Coordinate {
   }
 
   @override
-  bool operator==(Object other) => other is Coordinate && x == other.x && y == other.y;
+  bool operator ==(Object other) =>
+      other is Coordinate && x == other.x && y == other.y;
 
   @override
   int get hashCode => Object.hash(x, y);

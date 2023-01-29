@@ -362,8 +362,8 @@ class Intersecter {
             toggle = true;
           else
             // we are a segment that has previous knowledge from a division
-            toggle = ev.seg.myFill.above !=
-                ev.seg.myFill.below; // calculate toggle
+            toggle =
+                ev.seg.myFill.above != ev.seg.myFill.below; // calculate toggle
 
           // next, calculate whether we are filled below us
           if (below == null) {
@@ -379,9 +379,10 @@ class Intersecter {
           // since now we know if we're filled below us, we can calculate whether
           // we're filled above us by applying toggle to whatever is below us
           if (toggle)
-            ev.seg.myFill.above = !(ev.seg.myFill.below ?? !ev.seg.myFill.above);
+            ev.seg.myFill.above =
+                !(ev.seg.myFill.below ?? !ev.seg.myFill.above);
           else
-            ev.seg.myFill.above = ev.seg.myFill.below ??  ev.seg.myFill.above;
+            ev.seg.myFill.above = ev.seg.myFill.below ?? ev.seg.myFill.above;
         } else {
           // now we fill in any missing transition information, since we are all-knowing
           // at this point

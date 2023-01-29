@@ -1,5 +1,3 @@
-
-
 import 'coordinate.dart';
 import 'epsilon.dart';
 import 'types.dart';
@@ -179,7 +177,7 @@ class EventLinkedList {
   }
 
   int eventCompare(bool p1_isStart, Coordinate p1_1, Coordinate p1_2,
-    bool p2_isStart, Coordinate p2_1, Coordinate p2_2) {
+      bool p2_isStart, Coordinate p2_1, Coordinate p2_2) {
     // compare the selected points first
     // compare the selected points first
     var comp = Epsilon().pointsCompare(p1_1, p2_1);
@@ -187,7 +185,8 @@ class EventLinkedList {
 
     // the selected points are the same
 
-    if (Epsilon().pointsSame(p1_2, p2_2)) // if the non-selected points are the same too...
+    if (Epsilon().pointsSame(
+        p1_2, p2_2)) // if the non-selected points are the same too...
       return 0; // then the segments are equal
 
     if (p1_isStart != p2_isStart) // if one is a start and the other isn't...
