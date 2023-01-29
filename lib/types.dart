@@ -13,17 +13,15 @@ class Transition {
 }
 
 class Intersection {
-  static Intersection Empty = Intersection(pt: Coordinate(0, 0));
-
-//  alongA and alongB will each be one of: -2, -1, 0, 1, 2
-//
-//  with the following meaning:
-//
-//    -2   intersection point is before segment's first point
-//    -1   intersection point is directly on segment's first point
-//     0   intersection point is between segment's first and second points (exclusive)
-//     1   intersection point is directly on segment's second point
-//     2   intersection point is after segment's second point
+  //  alongA and alongB will each be one of: -2, -1, 0, 1, 2
+  //
+  //  with the following meaning:
+  //
+  //    -2   intersection point is before segment's first point
+  //    -1   intersection point is directly on segment's first point
+  //     0   intersection point is between segment's first and second points (exclusive)
+  //     1   intersection point is directly on segment's second point
+  //     2   intersection point is after segment's second point
 
   /// <summary>
   /// where the intersection point is at

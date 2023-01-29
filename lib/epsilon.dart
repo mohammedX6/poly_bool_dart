@@ -84,9 +84,7 @@ class Epsilon {
     return (dx1 * dy2 - dx2 * dy1).abs() <= eps * (n1 + n2);
   }
 
-  Map<bool, Intersection> linesIntersectAsMap(
-      Coordinate a0, Coordinate a1, Coordinate b0, Coordinate b1) {
-    Intersection intersection;
+  Intersection? linesIntersect(Segment a, Segment b) {
     // returns false if the lines are coincident (e.g., parallel or on top of each other)
     //
     // returns an object if the lines intersect:
@@ -105,6 +103,10 @@ class Epsilon {
     //     0   intersection point is between segment's first and second points (exclusive)
     //     1   intersection point is directly on segment's second point
     //     2   intersection point is after segment's second point
+    final a0 = a.start;
+    final a1 = a.end;
+    final b0 = b.start;
+    final b1 = b.end;
 
     var adx = a1.x - a0.x;
     var ady = a1.y - a0.y;
@@ -115,8 +117,7 @@ class Epsilon {
     var n1 = math.sqrt(adx * adx + ady * ady);
     var n2 = math.sqrt(bdx * bdx + bdy * bdy);
     if ((axb).abs() <= eps * (n1 + n2)) {
-      intersection = Intersection.Empty;
-      return {false: intersection}; // lines are coincident
+      return null;
     }
 
     var dx = a0.x - b0.x;
@@ -126,7 +127,7 @@ class Epsilon {
     var B = (adx * dy - ady * dx) / axb;
 
     Coordinate pt = Coordinate(a0.x + A * adx, a0.y + A * ady);
-    intersection = Intersection(alongA: 0, alongB: 0, pt: pt);
+    final intersection = Intersection(alongA: 0, alongB: 0, pt: pt);
 
     // categorize where intersection point is along A and B
 
@@ -146,6 +147,6 @@ class Epsilon {
       intersection.alongB = -2;
     else if (B > 1) intersection.alongB = 2;
 
-    return {true: intersection};
+    return intersection;
   }
 }

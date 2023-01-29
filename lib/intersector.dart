@@ -130,13 +130,9 @@ class Intersecter {
     var b1 = seg2.start;
     var b2 = seg2.end;
 
-    Intersection intersect;
-    Map<bool, Intersection> result =
-        Epsilon().linesIntersectAsMap(a1, a2, b1, b2);
-    intersect = result.values.first;
-    bool resultX = result.keys.first;
+    final intersect = Epsilon().linesIntersect(seg1, seg2);
 
-    if (!resultX) {
+    if (intersect == null) {
       // segments are parallel or coincident
 
       // if points aren't collinear, then the segments are parallel, so no intersections
