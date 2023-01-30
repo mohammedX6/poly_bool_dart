@@ -1,7 +1,6 @@
-import 'package:poly_bool_dart/coordinate.dart';
-import 'package:poly_bool_dart/polybool.dart';
-import 'package:poly_bool_dart/types.dart';
 import 'package:test/test.dart';
+
+import 'package:polybool/polybool.dart';
 
 void main() {
   test('Two partially overlapping squares', () {
