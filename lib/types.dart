@@ -41,13 +41,6 @@ class Intersection {
   Intersection({this.alongA, this.alongB, required this.pt});
 }
 
-class RegionPolygon {
-  final List<List<Coordinate>> regions;
-  final bool inverted;
-
-  RegionPolygon({required this.regions, this.inverted = false});
-}
-
 class SegmentList extends DelegatingList<Segment> {
   final List<Segment> _segments = [];
   bool inverted = false;

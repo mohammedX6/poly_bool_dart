@@ -1,5 +1,4 @@
-// MIT License
-
+import 'coordinate.dart';
 import 'intersector.dart';
 import 'segment_chainer.dart';
 import 'segment_selector.dart';
@@ -7,8 +6,40 @@ import 'types.dart';
 
 typedef Selector = SegmentList Function(CombinedSegmentLists);
 
-class PolyBool {
-  SegmentList segments(RegionPolygon poly) {
+class Polygon {
+  final List<List<Coordinate>> regions;
+  final bool inverted;
+
+  const Polygon({required this.regions, this.inverted = false});
+
+  Polygon union(Polygon other) {
+    return _operate(this, other, _selectUnion);
+  }
+
+  Polygon intersect(Polygon other) {
+    return _operate(this, other, _selectIntersect);
+  }
+
+  Polygon difference(Polygon other) {
+    return _operate(this, other, _selectDifference);
+  }
+
+  Polygon differenceRev(Polygon other) {
+    return _operate(this, other, _selectDifferenceRev);
+  }
+
+  Polygon xor(Polygon other) {
+    return _operate(this, other, _selectXor);
+  }
+
+  static Polygon _operate(Polygon poly1, Polygon poly2, Selector selector) {
+    final comb = _combine(_segments(poly1), _segments(poly2));
+    final segments = selector(comb);
+    var chain = SegmentChainer().chain(segments);
+    return Polygon(regions: chain, inverted: segments.inverted);
+  }
+
+  static SegmentList _segments(Polygon poly) {
     final i = Intersecter(true);
 
     for (final region in poly.regions) {
@@ -21,7 +52,8 @@ class PolyBool {
     return result;
   }
 
-  CombinedSegmentLists combine(SegmentList segments1, SegmentList segments2) {
+  static CombinedSegmentLists _combine(
+      SegmentList segments1, SegmentList segments2) {
     final i = Intersecter(false);
 
     return CombinedSegmentLists(
@@ -31,14 +63,14 @@ class PolyBool {
         inverted2: segments2.inverted);
   }
 
-  SegmentList selectUnion(CombinedSegmentLists combined) {
+  static SegmentList _selectUnion(CombinedSegmentLists combined) {
     var result = SegmentSelector.union(combined.combined);
     result.inverted = combined.inverted1 || combined.inverted2;
 
     return result;
   }
 
-  SegmentList selectIntersect(CombinedSegmentLists combined) {
+  static SegmentList _selectIntersect(CombinedSegmentLists combined) {
     var result = SegmentSelector.intersect(
       combined.combined,
     );
@@ -47,60 +79,24 @@ class PolyBool {
     return result;
   }
 
-  SegmentList selectDifference(CombinedSegmentLists combined) {
+  static SegmentList _selectDifference(CombinedSegmentLists combined) {
     var result = SegmentSelector.difference(combined.combined);
     result.inverted = combined.inverted1 && !combined.inverted2;
 
     return result;
   }
 
-  SegmentList selectDifferenceRev(CombinedSegmentLists combined) {
+  static SegmentList _selectDifferenceRev(CombinedSegmentLists combined) {
     var result = SegmentSelector.differenceRev(combined.combined);
     result.inverted = !combined.inverted1 && combined.inverted2;
 
     return result;
   }
 
-  SegmentList selectXor(CombinedSegmentLists combined) {
+  static SegmentList _selectXor(CombinedSegmentLists combined) {
     var result = SegmentSelector.xor(combined.combined);
     result.inverted = combined.inverted1 != combined.inverted2;
 
     return result;
-  }
-
-  RegionPolygon polygon(SegmentList segments) {
-    var chain = SegmentChainer().chain(segments);
-    return RegionPolygon(regions: chain, inverted: segments.inverted);
-  }
-
-  RegionPolygon union(RegionPolygon poly1, RegionPolygon poly2) {
-    return _operate(poly1, poly2, selectUnion);
-  }
-
-  RegionPolygon intersect(RegionPolygon poly1, RegionPolygon poly2) {
-    return _operate(poly1, poly2, selectIntersect);
-  }
-
-  RegionPolygon difference(RegionPolygon poly1, RegionPolygon poly2) {
-    return _operate(poly1, poly2, selectDifference);
-  }
-
-  RegionPolygon differenceRev(RegionPolygon poly1, RegionPolygon poly2) {
-    return _operate(poly1, poly2, selectDifferenceRev);
-  }
-
-  RegionPolygon xor(RegionPolygon poly1, RegionPolygon poly2) {
-    return _operate(poly1, poly2, selectXor);
-  }
-
-  RegionPolygon _operate(
-      RegionPolygon poly1, RegionPolygon poly2, Selector selector) {
-    var seg1 = segments(poly1);
-    var seg2 = segments(poly2);
-    var comb = combine(seg1, seg2);
-
-    var seg3 = selector(comb);
-
-    return polygon(seg3);
   }
 }
