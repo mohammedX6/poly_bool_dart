@@ -14,7 +14,7 @@ class SegmentChainer {
       final pt1 = seg.start;
       final pt2 = seg.end;
 
-      if (Epsilon().pointsSame(pt1, pt2)) {
+      if (epsilon.pointsSame(pt1, pt2)) {
         print(
             "PolyBool: Warning: Zero-length segment detected; your epsilon is probably too small or too large");
         continue;
@@ -45,13 +45,13 @@ class SegmentChainer {
           return true; // we've matched twice, we're done here
         }
 
-        if (Epsilon().pointsSame(chain.first, pt1)) {
+        if (epsilon.pointsSame(chain.first, pt1)) {
           if (setMatch(i, true, true)) break;
-        } else if (Epsilon().pointsSame(chain.first, pt2)) {
+        } else if (epsilon.pointsSame(chain.first, pt2)) {
           if (setMatch(i, true, false)) break;
-        } else if (Epsilon().pointsSame(chain.last, pt1)) {
+        } else if (epsilon.pointsSame(chain.last, pt1)) {
           if (setMatch(i, false, true)) break;
-        } else if (Epsilon().pointsSame(chain.last, pt2)) {
+        } else if (epsilon.pointsSame(chain.last, pt2)) {
           if (setMatch(i, false, false)) break;
         }
       }
@@ -82,7 +82,7 @@ class SegmentChainer {
         final oppo = addToHead ? chain[chain.length - 1] : chain[0];
         final oppo2 = addToHead ? chain[chain.length - 2] : chain[1];
 
-        if (Epsilon().pointsCollinear(grow2, grow, pt)) {
+        if (epsilon.pointsCollinear(grow2, grow, pt)) {
           // grow isn't needed because it's directly between grow2 and pt:
           // grow2 ---grow---> pt
           if (addToHead) {
@@ -93,11 +93,11 @@ class SegmentChainer {
           grow = grow2; // old grow is gone... grow is what grow2 was
         }
 
-        if (Epsilon().pointsSame(oppo, pt)) {
+        if (epsilon.pointsSame(oppo, pt)) {
           // we're closing the loop, so remove chain from chains
           chains.removeAt(index);
 
-          if (Epsilon().pointsCollinear(oppo2, oppo, grow)) {
+          if (epsilon.pointsCollinear(oppo2, oppo, grow)) {
             // oppo isn't needed because it's directly between oppo2 and grow:
             // oppo2 ---oppo--->grow
             if (addToHead) {
@@ -187,14 +187,14 @@ class SegmentChainer {
     final head = chain2[0];
     final head2 = chain2[1];
 
-    if (Epsilon().pointsCollinear(tail2, tail, head)) {
+    if (epsilon.pointsCollinear(tail2, tail, head)) {
       // tail isn't needed because it's directly between tail2 and head
       // tail2 ---tail---> head
       chain1.removeAt(chain1.length - 1);
       tail = tail2; // old tail is gone... tail is what tail2 was
     }
 
-    if (Epsilon().pointsCollinear(tail, head, head2)) {
+    if (epsilon.pointsCollinear(tail, head, head2)) {
       // head isn't needed because it's directly between tail and head2
       // tail ---head---> head2
       chain2.removeAt(0);

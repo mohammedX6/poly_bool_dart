@@ -94,7 +94,7 @@ class Intersecter {
     }
 
     // Ensure that the polygon is fully closed (the start point and end point are exactly the same)
-    if (!Epsilon().pointsSame(region[region.length - 1], region[0])) {
+    if (!epsilon.pointsSame(region[region.length - 1], region[0])) {
       region.add(region[0]);
     }
 
@@ -105,7 +105,7 @@ class Intersecter {
       final pt1 = region[i];
       final pt2 = region[i + 1];
 
-      final forward = Epsilon().pointsCompare(pt1, pt2);
+      final forward = epsilon.pointsCompare(pt1, pt2);
       if (forward == 0) // points are equal, so we have a zero-length segment
         continue; // just skip it
 
@@ -124,26 +124,26 @@ class Intersecter {
     final b1 = seg2.start;
     final b2 = seg2.end;
 
-    final intersect = Epsilon().linesIntersect(seg1, seg2);
+    final intersect = epsilon.linesIntersect(seg1, seg2);
 
     if (intersect == null) {
       // segments are parallel or coincident
 
       // if points aren't collinear, then the segments are parallel, so no intersections
-      if (!Epsilon().pointsCollinear(a1, a2, b1)) return null;
+      if (!epsilon.pointsCollinear(a1, a2, b1)) return null;
 
       // otherwise, segments are on top of each other somehow (aka coincident)
 
-      if (Epsilon().pointsSame(a1, b2) || Epsilon().pointsSame(a2, b1))
+      if (epsilon.pointsSame(a1, b2) || epsilon.pointsSame(a2, b1))
         return null; // segments touch at endpoints... no intersection
 
-      final a1_equ_b1 = Epsilon().pointsSame(a1, b1);
-      final a2_equ_b2 = Epsilon().pointsSame(a2, b2);
+      final a1_equ_b1 = epsilon.pointsSame(a1, b1);
+      final a2_equ_b2 = epsilon.pointsSame(a2, b2);
 
       if (a1_equ_b1 && a2_equ_b2) return ev2; // segments are exactly equal
 
-      final a1_between = !a1_equ_b1 && Epsilon().pointBetween(a1, b1, b2);
-      final a2_between = !a2_equ_b2 && Epsilon().pointBetween(a2, b1, b2);
+      final a1_between = !a1_equ_b1 && epsilon.pointBetween(a1, b1, b2);
+      final a2_between = !a2_equ_b2 && epsilon.pointBetween(a2, b1, b2);
 
       if (a1_equ_b1) {
         if (a2_between) {
@@ -241,8 +241,9 @@ class Intersecter {
 
           if (selfIntersection) {
             bool toggle = true; // are we a toggling edge?
-            if (ev.seg.myFill.below != null)
+            if (ev.seg.myFill.below != null) {
               toggle = ev.seg.myFill.above != ev.seg.myFill.below;
+            }
 
             // merge two segments that belong to the same polygon
             // think of this as sandwiching two segments together, where `eve.seg` is
@@ -274,10 +275,11 @@ class Intersecter {
         if (selfIntersection) {
           // if we are a segment...
           bool toggle = true; // are we a toggling edge?
-          if (ev.seg.myFill.below != null)
+          if (ev.seg.myFill.below != null) {
             // we are a segment that has previous knowledge from a division
             toggle =
                 ev.seg.myFill.above != ev.seg.myFill.below; // calculate toggle
+          }
 
           // next, calculate whether we are filled below us
           if (below == null) {
@@ -292,11 +294,12 @@ class Intersecter {
 
           // since now we know if we're filled below us, we can calculate whether
           // we're filled above us by applying toggle to whatever is below us
-          if (toggle)
+          if (toggle) {
             ev.seg.myFill.above =
                 !(ev.seg.myFill.below ?? !ev.seg.myFill.above);
-          else
+          } else {
             ev.seg.myFill.above = ev.seg.myFill.below ?? ev.seg.myFill.above;
+          }
         } else {
           // now we fill in any missing transition information, since we are all-knowing
           // at this point

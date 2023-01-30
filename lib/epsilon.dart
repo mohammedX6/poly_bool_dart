@@ -8,8 +8,12 @@ import 'dart:math' as math;
 import 'coordinate.dart';
 import 'types.dart';
 
+const epsilon = Epsilon();
+
 class Epsilon {
-  static const eps = 0.0000000001; // sane default? sure why not
+  static const eps = 1e-10; // sane default? sure why not
+
+  const Epsilon();
 
   bool pointAboveOrOnLine(Coordinate pt, Coordinate left, Coordinate right) {
     final Ax = left.x;
@@ -131,21 +135,25 @@ class Epsilon {
 
     // categorize where intersection point is along A and B
 
-    if (pointsSame(pt, a0))
+    if (pointsSame(pt, a0)) {
       intersection.alongA = -1;
-    else if (pointsSame(pt, a1))
+    } else if (pointsSame(pt, a1)) {
       intersection.alongA = 1;
-    else if (A < 0)
+    } else if (A < 0) {
       intersection.alongA = -2;
-    else if (A > 1) intersection.alongA = 2;
+    } else if (A > 1) {
+      intersection.alongA = 2;
+    }
 
-    if (pointsSame(pt, b0))
+    if (pointsSame(pt, b0)) {
       intersection.alongB = -1;
-    else if (pointsSame(pt, b1))
+    } else if (pointsSame(pt, b1)) {
       intersection.alongB = 1;
-    else if (B < 0)
+    } else if (B < 0) {
       intersection.alongB = -2;
-    else if (B > 1) intersection.alongB = 2;
+    } else if (B > 1) {
+      intersection.alongB = 2;
+    }
 
     return intersection;
   }

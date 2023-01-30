@@ -8,10 +8,12 @@ class SegmentSelector {
   static select(SegmentList segments, List<int> selection) {
     final result = SegmentList();
     for (final seg in segments) {
-      final index = (seg.myFill.above ? 8 : 0) +
-          (seg.myFill.below! ? 4 : 0) +
-          ((seg.otherFill != null && seg.otherFill!.above) ? 2 : 0) +
-          ((seg.otherFill != null && seg.otherFill!.below!) ? 1 : 0);
+      final myFill = seg.myFill;
+      final otherFill = seg.otherFill;
+      final index = (myFill.above ? 8 : 0) +
+          ((myFill.below ?? false) ? 4 : 0) +
+          ((otherFill?.above ?? false) ? 2 : 0) +
+          ((otherFill?.below ?? false) ? 1 : 0);
 
       if (selection[index] != 0) {
         // copy the segment to the results, while also calculating the fill status

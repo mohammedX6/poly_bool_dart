@@ -29,12 +29,12 @@ class EventNode extends LinkedListEntry<EventNode> {
     final p2_2 = p2.other.pt;
 
     // compare the selected points first
-    final comp = Epsilon().pointsCompare(p1_1, p2_1);
+    final comp = epsilon.pointsCompare(p1_1, p2_1);
     if (comp != 0) return comp;
 
     // the selected points are the same
 
-    if (Epsilon().pointsSame(
+    if (epsilon.pointsSame(
         p1_2, p2_2)) // if the non-selected points are the same too...
       return 0; // then the segments are equal
 
@@ -42,7 +42,7 @@ class EventNode extends LinkedListEntry<EventNode> {
       return p1_isStart ? 1 : -1; // favor the one that isn't the start
 
     // otherwise, we'll have to calculate which one is below the other manually
-    return Epsilon().pointAboveOrOnLine(
+    return epsilon.pointAboveOrOnLine(
             p1_2,
             p2_isStart ? p2_1 : p2_2, // order matters
             p2_isStart ? p2_2 : p2_1)
@@ -62,14 +62,14 @@ class StatusNode extends LinkedListEntry<StatusNode> {
     final b1 = other.ev.seg.start;
     final b2 = other.ev.seg.end;
 
-    if (Epsilon().pointsCollinear(a1, b1, b2)) {
-      if (Epsilon().pointsCollinear(a2, b1, b2))
+    if (epsilon.pointsCollinear(a1, b1, b2)) {
+      if (epsilon.pointsCollinear(a2, b1, b2))
         return 1; //eventCompare(true, a1, a2, true, b1, b2);
 
-      return Epsilon().pointAboveOrOnLine(a2, b1, b2) ? 1 : -1;
+      return epsilon.pointAboveOrOnLine(a2, b1, b2) ? 1 : -1;
     }
 
-    return Epsilon().pointAboveOrOnLine(a1, b1, b2) ? 1 : -1;
+    return epsilon.pointAboveOrOnLine(a1, b1, b2) ? 1 : -1;
   }
 }
 
