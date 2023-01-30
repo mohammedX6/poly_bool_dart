@@ -5,9 +5,9 @@ import 'linked_list.dart';
 import 'segment_fill.dart';
 
 class Transition {
-  EventNode? above;
-  EventNode? below;
-  StatusNode Function() insert;
+  final EventNode? above;
+  final EventNode? below;
+  final StatusNode Function() insert;
 
   Transition({this.above, this.below, required this.insert});
 }
@@ -26,7 +26,7 @@ class Intersection {
   /// <summary>
   /// where the intersection point is at
   /// </summary>
-  Coordinate pt;
+  final Coordinate pt;
 
   /// <summary>
   /// where intersection point is along A
@@ -42,8 +42,8 @@ class Intersection {
 }
 
 class RegionPolygon {
-  List<List<Coordinate>> regions;
-  bool inverted;
+  final List<List<Coordinate>> regions;
+  final bool inverted;
 
   RegionPolygon({required this.regions, this.inverted = false});
 }
@@ -54,17 +54,15 @@ class SegmentList extends DelegatingList<Segment> {
 
   @override
   List<Segment> get delegate => _segments;
-
-// custom methods
 }
 
 class CombinedSegmentLists {
-  SegmentList? combined;
-  bool inverted1;
-  bool inverted2;
+  final SegmentList combined;
+  final bool inverted1;
+  final bool inverted2;
 
   CombinedSegmentLists(
-      {this.combined, this.inverted1 = false, this.inverted2 = false});
+      {required this.combined, this.inverted1 = false, this.inverted2 = false});
 }
 
 // class PointList extends DelegatingList<Coordinate> {

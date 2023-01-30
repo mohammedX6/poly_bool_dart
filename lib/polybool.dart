@@ -32,7 +32,7 @@ class PolyBool {
   }
 
   SegmentList selectUnion(CombinedSegmentLists combined) {
-    var result = SegmentSelector.union(combined.combined!);
+    var result = SegmentSelector.union(combined.combined);
     result.inverted = combined.inverted1 || combined.inverted2;
 
     return result;
@@ -40,7 +40,7 @@ class PolyBool {
 
   SegmentList selectIntersect(CombinedSegmentLists combined) {
     var result = SegmentSelector.intersect(
-      combined.combined!,
+      combined.combined,
     );
     result.inverted = combined.inverted1 && combined.inverted2;
 
@@ -48,21 +48,21 @@ class PolyBool {
   }
 
   SegmentList selectDifference(CombinedSegmentLists combined) {
-    var result = SegmentSelector.difference(combined.combined!);
+    var result = SegmentSelector.difference(combined.combined);
     result.inverted = combined.inverted1 && !combined.inverted2;
 
     return result;
   }
 
   SegmentList selectDifferenceRev(CombinedSegmentLists combined) {
-    var result = SegmentSelector.differenceRev(combined.combined!);
+    var result = SegmentSelector.differenceRev(combined.combined);
     result.inverted = !combined.inverted1 && combined.inverted2;
 
     return result;
   }
 
   SegmentList selectXor(CombinedSegmentLists combined) {
-    var result = SegmentSelector.xor(combined.combined!);
+    var result = SegmentSelector.xor(combined.combined);
     result.inverted = combined.inverted1 != combined.inverted2;
 
     return result;

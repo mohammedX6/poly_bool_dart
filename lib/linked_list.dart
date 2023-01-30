@@ -29,7 +29,7 @@ class EventNode extends LinkedListEntry<EventNode> {
     final p2_2 = p2.other.pt;
 
     // compare the selected points first
-    var comp = Epsilon().pointsCompare(p1_1, p2_1);
+    final comp = Epsilon().pointsCompare(p1_1, p2_1);
     if (comp != 0) return comp;
 
     // the selected points are the same
