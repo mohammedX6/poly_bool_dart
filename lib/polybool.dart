@@ -1,6 +1,5 @@
 // MIT License
 
-import 'build_log.dart';
 import 'intersector.dart';
 import 'segment_chainer.dart';
 import 'segment_selector.dart';
@@ -9,8 +8,6 @@ import 'types.dart';
 typedef Selector = SegmentList Function(CombinedSegmentLists);
 
 class PolyBool {
-  BuildLog? log;
-
   SegmentList segments(RegionPolygon poly) {
     final i = Intersecter(true);
 
@@ -35,7 +32,7 @@ class PolyBool {
   }
 
   SegmentList selectUnion(CombinedSegmentLists combined) {
-    var result = SegmentSelector.union(combined.combined!, log);
+    var result = SegmentSelector.union(combined.combined!);
     result.inverted = combined.inverted1 || combined.inverted2;
 
     return result;
@@ -44,7 +41,6 @@ class PolyBool {
   SegmentList selectIntersect(CombinedSegmentLists combined) {
     var result = SegmentSelector.intersect(
       combined.combined!,
-      log,
     );
     result.inverted = combined.inverted1 && combined.inverted2;
 
@@ -52,30 +48,28 @@ class PolyBool {
   }
 
   SegmentList selectDifference(CombinedSegmentLists combined) {
-    var result = SegmentSelector.difference(combined.combined!, log);
+    var result = SegmentSelector.difference(combined.combined!);
     result.inverted = combined.inverted1 && !combined.inverted2;
 
     return result;
   }
 
   SegmentList selectDifferenceRev(CombinedSegmentLists combined) {
-    var result = SegmentSelector.differenceRev(combined.combined!, log);
+    var result = SegmentSelector.differenceRev(combined.combined!);
     result.inverted = !combined.inverted1 && combined.inverted2;
 
     return result;
   }
 
   SegmentList selectXor(CombinedSegmentLists combined) {
-    var result = SegmentSelector.xor(combined.combined!, log);
+    var result = SegmentSelector.xor(combined.combined!);
     result.inverted = combined.inverted1 != combined.inverted2;
 
     return result;
   }
 
   RegionPolygon polygon(SegmentList segments) {
-    //missing log
     var chain = SegmentChainer().chain(segments);
-
     return RegionPolygon(regions: chain, inverted: segments.inverted);
   }
 

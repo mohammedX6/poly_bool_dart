@@ -17,10 +17,6 @@ class SegmentChainer {
         continue;
       }
 
-      // if (buildLog != null) {
-      //   buildLog.chainStart(seg);
-      // }
-
       final first_match =
           Match(index: 0, matches_head: false, matches_pt1: false);
       final second_match =
@@ -63,18 +59,11 @@ class SegmentChainer {
         // we didn't match anything, so create a chain
         chains.add([pt1, pt2]);
 
-        // if (buildLog != null) {
-        //   buildLog.chainNew(pt1, pt2);
-        // }
-
         continue;
       }
 
       if (next_match == second_match) {
         // we matched a single chain
-
-        // if( buildLog != null )
-        // buildLog.chainMatch( first_match.index );
 
         // add the other point to the apporpriate end, and check to see if we've closed the
         // chain into a loop
@@ -96,14 +85,8 @@ class SegmentChainer {
           // grow isn't needed because it's directly between grow2 and pt:
           // grow2 ---grow---> pt
           if (addToHead) {
-            // if (buildLog != null)
-            //   buildLog.chainRemoveHead(first_match.index, pt);
-
             chain.removeAt(0);
           } else {
-            // if (buildLog != null)
-            //   buildLog.chainRemoveTail(first_match.index, pt);
-
             chain.removeAt(chain.length - 1);
           }
           grow = grow2; // old grow is gone... grow is what grow2 was
@@ -117,19 +100,11 @@ class SegmentChainer {
             // oppo isn't needed because it's directly between oppo2 and grow:
             // oppo2 ---oppo--->grow
             if (addToHead) {
-              // if (buildLog != null)
-              //   buildLog.chainRemoveTail(first_match.index, grow);
-
               chain.removeAt(chain.length - 1);
             } else {
-              // if (buildLog != null)
-              //   buildLog.chainRemoveHead(first_match.index, grow);
-
               chain.removeAt(0);
             }
           }
-
-          // if (buildLog != null) buildLog.chainClose(first_match.index);
 
           // we have a closed chain!
           regions.add(chain);
@@ -138,12 +113,8 @@ class SegmentChainer {
 
         // not closing a loop, so just add it to the apporpriate side
         if (addToHead) {
-          //   if (buildLog != null) buildLog.chainAddHead(first_match.index, pt);
-
           chain.insert(0, pt);
         } else {
-          // if (buildLog != null) buildLog.chainAddTail(first_match.index, pt);
-
           chain.add(pt);
         }
 
@@ -154,10 +125,6 @@ class SegmentChainer {
 
       var F = first_match.index;
       var S = second_match.index;
-
-      // if (buildLog != null) {
-      //   buildLog.chainConnect(F, S);
-      // }
 
       var reverseF = chains[F].length <
           chains[S].length; // reverse the shorter chain, if needed
@@ -205,9 +172,6 @@ class SegmentChainer {
   }
 
   void reverseChain(int index) {
-    //chains[index].reversed;
-    //if (buildLog != null) buildLog.chainReverse(index);
-
     List<Coordinate> pointList = [];
     pointList.addAll(chains[index].reversed.toList());
     chains[index] = pointList; // gee, that's easy
@@ -225,8 +189,6 @@ class SegmentChainer {
     if (Epsilon().pointsCollinear(tail2, tail, head)) {
       // tail isn't needed because it's directly between tail2 and head
       // tail2 ---tail---> head
-      //if (buildLog != null) buildLog.chainRemoveTail(index1, tail);
-
       chain1.removeAt(chain1.length - 1);
       tail = tail2; // old tail is gone... tail is what tail2 was
     }
@@ -234,12 +196,8 @@ class SegmentChainer {
     if (Epsilon().pointsCollinear(tail, head, head2)) {
       // head isn't needed because it's directly between tail and head2
       // tail ---head---> head2
-      //  if (buildLog != null) buildLog.chainRemoveHead(index2, head);
-
       chain2.removeAt(0);
     }
-
-    // if (buildLog != null) buildLog.chainJoin(index1, index2);
 
     chain1.addAll(chain2);
     chains.removeAt(index2);

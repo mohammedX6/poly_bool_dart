@@ -1,4 +1,3 @@
-import 'build_log.dart';
 //
 // filter a list of segments based on boolean operations
 //
@@ -6,7 +5,7 @@ import 'segment_fill.dart';
 import 'types.dart';
 
 class SegmentSelector {
-  static select(SegmentList segments, List<int> selection, BuildLog? buildLog) {
+  static select(SegmentList segments, List<int> selection) {
     final result = SegmentList();
     for (final seg in segments) {
       final index = (seg.myFill.above ? 8 : 0) +
@@ -154,23 +153,23 @@ class SegmentSelector {
     0, 1, 2, 0, //
   ];
 
-  static SegmentList union(SegmentList segments, BuildLog? buildLog) {
-    return select(segments, union_select_table, buildLog);
+  static SegmentList union(SegmentList segments) {
+    return select(segments, union_select_table);
   }
 
-  static SegmentList difference(SegmentList segments, BuildLog? buildLog) {
-    return select(segments, difference_select_table, buildLog);
+  static SegmentList difference(SegmentList segments) {
+    return select(segments, difference_select_table);
   }
 
-  static SegmentList intersect(SegmentList segments, BuildLog? buildLog) {
-    return select(segments, intersect_select_table, buildLog);
+  static SegmentList intersect(SegmentList segments) {
+    return select(segments, intersect_select_table);
   }
 
-  static SegmentList differenceRev(SegmentList segments, BuildLog? buildLog) {
-    return select(segments, differenceRev_select_table, buildLog);
+  static SegmentList differenceRev(SegmentList segments) {
+    return select(segments, differenceRev_select_table);
   }
 
-  static SegmentList xor(SegmentList segments, BuildLog? buildLog) {
-    return select(segments, xor_select_table, buildLog);
+  static SegmentList xor(SegmentList segments) {
+    return select(segments, xor_select_table);
   }
 }
