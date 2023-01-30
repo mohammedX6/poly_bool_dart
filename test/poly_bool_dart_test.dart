@@ -43,14 +43,17 @@ void main() {
     // Self-intersection is also identity.
     expect(poly1.intersect(poly1).regions.first,
         unorderedEquals(poly1.regions.first.sublist(0, 4)));
+    final intersection = poly1.intersect(poly2);
     expect(
-        poly1.intersect(poly2).regions.first,
+        intersection.regions.first,
         orderedEquals([
           Coordinate(4.0, 4.0),
           Coordinate(4.0, 1.0),
           Coordinate(1.0, 1.0),
           Coordinate(1.0, 4.0),
         ]));
+    expect(poly2.intersect(poly1).regions.first,
+        equals(intersection.regions.first));
 
     // Self-difference is empty.
     expect(poly1.difference(poly1).regions, equals([]));
@@ -104,5 +107,8 @@ void main() {
           Coordinate(1.0, 4.0),
           Coordinate(1.0, 10.0),
         ]));
+
+    // Make sure multiple regions are merged.
+    expect(intersection.union(xor).regions, equals(poly1.union(poly2).regions));
   });
 }
