@@ -14,3 +14,10 @@
 ## 0.1.0
 
 * Unsound Null Safety release
+
+## 0.2.0
+
+* Breaking change in public API, e.g. s/RegionPolygon/Polygon + methods.
+* Sound Null Safety internally and publicly.
+* First tests.
+* Internal cleanup, e.g. remove custom linked lists.

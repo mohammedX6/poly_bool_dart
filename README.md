@@ -1,34 +1,36 @@
-poly_bool_dart
+# Polybool
 
-Boolean operations on polygons (union, intersection, difference, xor) (this library is a port for flutter of polybooljs
+Boolean operations on polygons: union, intersection, difference, xor.
+
+This library is based on:
+  * [polybooljs](https://github.com/velipso/polybooljs) by velipso@, which is based on
+  * [polybool actionscript](https://github.com/akavel/martinez-src) by akavel@, which is based on
+  * an implementation by Mahir Iqbal, which is based on
+  * F. Martinez' (2008) algorithm ([Paper](http://www.cs.ucr.edu/~vbz/cs230papers/martinez_boolean.pdf))
 
 ## Features
-
 
 1. Clips polygons for all boolean operations
 2. Removes unnecessary vertices
 3. Handles segments that are coincident (overlap perfectly, share vertices, one inside the other,
    etc)
-4. Uses formulas that take floating point irregularities into account (via configurable epsilon)
+4. Uses formulas that take floating point irregularities into account
 5. Provides an API for constructing efficient sequences of operations
-
 
 ## How to use it
 
-
-
-
-    RegionPolygon poly1 = RegionPolygon(regions: [
+```dart
+    final poly1 = Polygon(regions: [
       [
         Coordinate(37.27935791015625, 29.32472016151103),
         Coordinate(37.122802734375, 29.257648503615542),
         Coordinate(37.22442626953125, 29.135369220927156),
         Coordinate(37.36175537109374, 29.221699149280646),
-        Coordinate(37.27935791015625, 29.32472016151103)
+        Coordinate(37.27935791015625, 29.32472016151103),
       ],
     ]);
 
-    RegionPolygon poly2 = RegionPolygon(regions: [
+    final poly2 = Polygon(regions: [
       [
         Coordinate(37.104949951171875, 29.159357041355424),
         Coordinate(37.1722412109375, 29.046565622728846),
@@ -38,25 +40,13 @@ Boolean operations on polygons (union, intersection, difference, xor) (this libr
       ]
     ]);
 
-    var seg1 = PolyBool().segments(poly1);
-    var seg2 = PolyBool().segments(poly2);
-    var comb = PolyBool().combine(seg1, seg2);
-    var result = {
-      'union': PolyBool().polygon(PolyBool().selectUnion(comb)),
-      'intersect': PolyBool().polygon(PolyBool().selectIntersect(comb)),
-      'difference': PolyBool().polygon(PolyBool().selectDifference(comb)),
-      'differenceRev': PolyBool().polygon(PolyBool().selectDifferenceRev(comb)),
-      'xor': PolyBool().polygon(PolyBool().selectXor(comb))
-    };
-
-## Notes
-1. No test cases available, Because i don't have time right now
-
+    final union = poly1.union(poly2);
+    final intersection = poly1.intersect(poly2);
+    final difference = poly1.difference(poly2);
+    final inverseDifference = poly1.differenceRev(poly2);
+    final xor = poly1.xor(poly2);
+```
 
 # Resources
 
-* [View the demo + animation](https://unpkg.com/polybooljs@1.2.0/dist/demo.html)
-* Based somewhat on the F. Martinez (2008) algorithm:
-    * [Paper](http://www.cs.ucr.edu/~vbz/cs230papers/martinez_boolean.pdf)
-    * [Code](https://github.com/akavel/martinez-src
-    * [More Info](https://github.com/velipso/polybooljs)
+* [Companion Tutorial](https://sean.cm/a/polygon-clipping-pt2)
