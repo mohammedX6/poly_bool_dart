@@ -3,7 +3,6 @@
 Boolean operations on polygons: union, intersection, difference, xor.
 
 This library is based on:
-  * [poly-bool-dart](https://github.com/mohammedX6/poly_bool_dart) by mohammedX6@, which is based on
   * [polybooljs](https://github.com/velipso/polybooljs) by velipso@, which is based on
   * [polybool actionscript](https://github.com/akavel/martinez-src) by akavel@, which is based on
   * an implementation by Mahir Iqbal, which is based on

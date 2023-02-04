@@ -1,6 +1,6 @@
 name: polybool
 description: Boolean operations on polygons (union, intersection, difference, xor).
-version: 1.0.0
+version: 0.2.0
 homepage: https://github.com/mohammedX6/poly_bool_dart/tree/master
 
 environment:
