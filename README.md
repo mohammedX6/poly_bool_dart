@@ -1,5 +1,9 @@
 # Polybool
 
+New!!
+This package is now on pub.dev !
+https://pub.dev/packages/polybool
+
 Boolean operations on polygons: union, intersection, difference, xor.
 
 This library is based on:
