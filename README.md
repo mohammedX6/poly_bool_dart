@@ -2,9 +2,10 @@
 
 New!!
 
-This package is now on pub.dev
+1.This package is now on pub.dev: https://pub.dev/packages/polybool
 
-https://pub.dev/packages/polybool
+2.Null saftey is now supported thanks to @ignatz
+
 
 Boolean operations on polygons: union, intersection, difference, xor.
 
