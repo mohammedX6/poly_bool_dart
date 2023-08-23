@@ -3,18 +3,25 @@
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/mohammedx6)
 
 
-1.This package is now on pub.dev: https://pub.dev/packages/polybool
+1. This package is now on pub.dev: https://pub.dev/packages/polybool
 
-2.Null saftey is now supported thanks to @ignatz
+2. Null saftey is now supported thanks to @ignatz
 
 
 Boolean operations on polygons: union, intersection, difference, xor.
+
+
+# Resources
+ Note: taken from original libaray polybooljs
+
+* [Demo + Animation](https://unpkg.com/polybooljs@1.2.0/dist/demo.html)
+* [Companion Tutorial](https://sean.cm/a/polygon-clipping-pt2)
 
 This library is based on:
   * [polybooljs](https://github.com/velipso/polybooljs) by velipso@, which is based on
   * [polybool actionscript](https://github.com/akavel/martinez-src) by akavel@, which is based on
   * an implementation by Mahir Iqbal, which is based on
-  * F. Martinez' (2008) algorithm ([Paper](http://www.cs.ucr.edu/~vbz/cs230papers/martinez_boolean.pdf))
+  * F. Martinez' (2008) algorithm ([Paper](http://www.cs.ucr.edu/~vbz/cs230papers/martinez_boolean.pdf))[Code](https://github.com/akavel/martinez-src)
 
 ## Features
 
@@ -55,6 +62,4 @@ This library is based on:
     final xor = poly1.xor(poly2);
 ```
 
-# Resources
 
-* [Companion Tutorial](https://sean.cm/a/polygon-clipping-pt2)
