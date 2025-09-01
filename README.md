@@ -1,11 +1,8 @@
 # Polybool
 
+[![pub package](https://img.shields.io/pub/v/polybool.svg)](https://pub.dev/packages/polybool)
+[![likes](https://img.shields.io/pub/likes/polybool)](https://pub.dev/packages/polybool/score)
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/mohammedx6)
-
-
-1. This package is now on pub.dev: https://pub.dev/packages/polybool
-
-2. Null saftey is now supported thanks to @ignatz
 
 
 Boolean operations on polygons: union, intersection, difference, xor.
