@@ -7,7 +7,7 @@
 
 Boolean operations on polygons: union, intersection, difference, xor.
 
-## 🦄 Why polybool?
+## Why polybool?
 
 Flutter had **no package** for polygon Boolean operations until now.  
 `polybool` is the **first and only library** in Dart that lets you:
