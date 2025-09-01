@@ -10,6 +10,18 @@
 
 Boolean operations on polygons: union, intersection, difference, xor.
 
+## 🦄 Why polybool?
+
+Flutter had **no package** for polygon Boolean operations until now.  
+`polybool` is the **first and only library** in Dart that lets you:
+
+- Combine polygons (union)
+- Find overlaps (intersection)
+- Cut one shape from another (difference)
+- Exclusive regions (XOR)
+
+If you’ve ever needed polygon clipping in Flutter — for **maps, games, or graphics apps** —  
+this package saves you from writing complex geometry algorithms yourself.
 
 # Resources
  Note: taken from original libaray polybooljs
@@ -60,6 +72,3 @@ This library is based on:
     final difference = poly1.difference(poly2);
     final inverseDifference = poly1.differenceRev(poly2);
     final xor = poly1.xor(poly2);
-```
-
-
